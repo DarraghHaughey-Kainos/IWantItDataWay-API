@@ -6,4 +6,4 @@ CREATE table hello_world (
     PRIMARY KEY (id)
 );
 
-INSERT INTO hello_world (id, name) VALUES (NULL, "hello world");
+INSERT INTO hello_world (name) VALUES ("hello world");

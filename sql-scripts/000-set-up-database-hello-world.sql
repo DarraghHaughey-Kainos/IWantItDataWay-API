@@ -1,3 +1,5 @@
+CREATE DATABASE IWantItDataWay_StephenH;
+
 USE IWantItDataWay_StephenH;
 
 CREATE table hello_world (

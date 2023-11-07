@@ -15,21 +15,23 @@ public class HelloWorldDao {
         try(Connection c = DatabaseConnector.getConnection()) {
             assert c != null;
 
-            Statement st = c.createStatement();
-            ResultSet rs = st.executeQuery("SELECT id, name FROM hello_world;");
+            try(Statement st = c.createStatement()) {
+                ResultSet rs = st.executeQuery("SELECT id, name FROM hello_world;");
 
-            List<HelloWorld> helloWorldList = new ArrayList<>();
+                List<HelloWorld> helloWorldList = new ArrayList<>();
 
-            while (rs.next()) {
-                HelloWorld helloWorld = new HelloWorld(
-                        rs.getInt("id"),
-                        rs.getString("name")
-                );
+                while (rs.next()) {
+                    HelloWorld helloWorld = new HelloWorld(
+                            rs.getInt("id"),
+                            rs.getString("name")
+                    );
 
-                helloWorldList.add(helloWorld);
+                    helloWorldList.add(helloWorld);
+                }
+
+                return helloWorldList;
             }
 
-            return helloWorldList;
         } catch(SQLException e) {
             throw new SQLException();
         }

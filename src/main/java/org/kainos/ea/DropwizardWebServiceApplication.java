@@ -13,7 +13,7 @@ public class DropwizardWebServiceApplication extends Application<DropwizardWebSe
 
     @Override
     public String getName() {
-        return "DropwizardWebService";
+        return "IWantItDataWayAPI";
     }
 
     @Override

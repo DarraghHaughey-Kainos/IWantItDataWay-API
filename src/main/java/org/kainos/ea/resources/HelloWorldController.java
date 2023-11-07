@@ -2,7 +2,6 @@ package org.kainos.ea.resources;
 
 import org.kainos.ea.api.HelloWorldService;
 import org.kainos.ea.client.ActionFailedException;
-import org.kainos.ea.client.AuthenticationException;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

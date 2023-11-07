@@ -1,10 +1,8 @@
 package org.kainos.ea.db;
 
-import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Properties;
 
 public class DatabaseConnector {
     private static Connection conn;
@@ -14,25 +12,21 @@ public class DatabaseConnector {
 
         if (conn!= null && !conn.isClosed()) { return  conn; }
 
-        try(FileInputStream propsStream = new FileInputStream("db.properties")) {
-
-            Properties props = new Properties();
-            props.load(propsStream);
-
-            user = props.getProperty("user");
-            password = props.getProperty("password");
-            host = props.getProperty("host");
-            name = props.getProperty("name");
+        try {
+            user = System.getenv("DB_USERNAME");
+            password = System.getenv("DB_PASSWORD");
+            host = System.getenv("DB_HOST");
+            name = System.getenv("DB_NAME");
 
             if (user == null || password == null || host == null) {
-                throw new IllegalArgumentException("Properties file must exist " +
-                        "and must contain user, password, name, and host properties");
+                throw new IllegalArgumentException("Environment variables " +
+                        "must contain DB_USERNAME, DB_PASSWORD, DB_NAME, and DB_HOST properties");
             }
 
             conn = DriverManager.getConnection("jdbc:mysql://"+host+"/"+name+"?useSSL=false", user, password);
             return conn;
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.err.println("DB connection problem");
             System.err.println(e.getMessage());
         }

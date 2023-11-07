@@ -1,4 +1,4 @@
-# DropwizardWebService
+# I Want It Data Way API
 
 How to start the DropwizardWebService application
 ---

@@ -12,23 +12,26 @@ import java.util.List;
 public class HelloWorldDao {
 
     public List<HelloWorld> getHelloWorld() throws SQLException {
-        Connection c = DatabaseConnector.getConnection();
-        assert c != null;
+        try(Connection c = DatabaseConnector.getConnection()) {
+            assert c != null;
 
-        Statement st = c.createStatement();
-        ResultSet rs = st.executeQuery("SELECT id, name FROM hello_world;");
+            Statement st = c.createStatement();
+            ResultSet rs = st.executeQuery("SELECT id, name FROM hello_world;");
 
-        List<HelloWorld> helloWorldList = new ArrayList<>();
+            List<HelloWorld> helloWorldList = new ArrayList<>();
 
-        while (rs.next()) {
-            HelloWorld helloWorld = new HelloWorld(
-                    rs.getInt("id"),
-                    rs.getString("name")
-            );
+            while (rs.next()) {
+                HelloWorld helloWorld = new HelloWorld(
+                        rs.getInt("id"),
+                        rs.getString("name")
+                );
 
-            helloWorldList.add(helloWorld);
+                helloWorldList.add(helloWorld);
+            }
+
+            return helloWorldList;
+        } catch(SQLException e) {
+            throw new SQLException();
         }
-
-        return helloWorldList;
     }
 }

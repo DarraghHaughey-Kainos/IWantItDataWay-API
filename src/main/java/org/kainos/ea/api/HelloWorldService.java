@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class HelloWorldService {
-
     private final HelloWorldDao helloWorldDao = new HelloWorldDao();
 
     public List<HelloWorld> getHelloWorld() throws ActionFailedException {

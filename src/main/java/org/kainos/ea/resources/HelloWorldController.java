@@ -6,6 +6,8 @@ import org.kainos.ea.api.HelloWorldService;
 import org.kainos.ea.client.ActionFailedException;
 import org.kainos.ea.client.AuthenticationException;
 import org.kainos.ea.db.AuthDao;
+import org.kainos.ea.db.DatabaseConnector;
+import org.kainos.ea.db.HelloWorldDao;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -24,9 +26,10 @@ public class HelloWorldController {
      * Default constructor catches error for environment variables not set up correctly.
      */
     public HelloWorldController() {
-        helloWorldService = new HelloWorldService();
+        DatabaseConnector databaseConnector = new DatabaseConnector();
+        helloWorldService = new HelloWorldService(databaseConnector, new HelloWorldDao());
         try {
-            authService = new AuthService(new AuthDao());
+            authService = new AuthService(databaseConnector, new AuthDao());
         } catch (AuthenticationException e) {
             System.err.println(e.getMessage());
         }

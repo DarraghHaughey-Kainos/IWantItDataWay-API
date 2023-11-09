@@ -17,61 +17,49 @@ import java.security.Key;
 public class AuthDao {
 
     private final Key hmacKey;
-    Argon2PasswordEncoder encoder = new Argon2PasswordEncoder(32,64,1,15*1024,2);
+    Argon2PasswordEncoder encoder = new Argon2PasswordEncoder(32, 64, 1, 15 * 1024, 2);
 
     public AuthDao() throws AuthenticationException {
         try {
             hmacKey = new SecretKeySpec(Base64.getDecoder().decode(System.getenv("JWT_SECRET")),
                     SignatureAlgorithm.HS256.getJcaName());
-        } catch(Exception e) {
+        } catch (Exception e) {
             throw new AuthenticationException("JWT_SECRET not set up correctly");
         }
     }
 
-    public boolean validateLogin(Credential credential) throws AuthenticationException, ActionFailedException {
-        try (Connection c = DatabaseConnector.getConnection()) {
-            assert c != null;
+    public boolean validateLogin(Connection c, Credential credential) throws AuthenticationException, ActionFailedException, SQLException {
+        String selectQuery = "SELECT password FROM `user` WHERE username = ?";
+        PreparedStatement st = c.prepareStatement(selectQuery);
 
-            String selectQuery = "SELECT password FROM `user` WHERE username = ?";
-            PreparedStatement st = c.prepareStatement(selectQuery);
+        st.setString(1, credential.getUsername());
 
-            st.setString(1, credential.getUsername());
+        ResultSet rs = st.executeQuery();
 
-            ResultSet rs = st.executeQuery();
-
-            if (rs.next()) {
-                String storedEncodedPassword = rs.getString("password");
-                return encoder.matches(credential.getPassword(), storedEncodedPassword);
-            }
-            return false;
-        } catch (SQLException e) {
-            throw new ActionFailedException(e.getMessage());
+        if (rs.next()) {
+            String storedEncodedPassword = rs.getString("password");
+            return encoder.matches(credential.getPassword(), storedEncodedPassword);
         }
+        return false;
     }
 
 
-    public boolean registerUser(Credential credential) throws ActionFailedException, AuthenticationException {
-        try (Connection c = DatabaseConnector.getConnection()) {
-            assert c != null;
+    public boolean registerUser(Connection c, Credential credential) throws AuthenticationException, SQLException {
+        String encodedPassword = encoder.encode(credential.getPassword());
 
-            String encodedPassword = encoder.encode( credential.getPassword());
+        String insertQuery = "INSERT INTO user(username,password) VALUES(?,?)";
+        PreparedStatement st = c.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
 
-            String insertQuery = "INSERT INTO user(username,password) VALUES(?,?)";
-            PreparedStatement st = c.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
+        st.setString(1, credential.getUsername());
+        st.setString(2, encodedPassword);
 
-            st.setString(1, credential.getUsername());
-            st.setString(2, encodedPassword);
+        int affectedRows = st.executeUpdate();
 
-            int affectedRows = st.executeUpdate();
-
-            if (affectedRows > 0) {
-                return true;
-            }
-
-            throw new AuthenticationException("Failed to register user");
-        } catch (SQLException e) {
-            throw new ActionFailedException(e.getMessage());
+        if (affectedRows > 0) {
+            return true;
         }
+
+        throw new AuthenticationException("Failed to register user");
     }
 
     public String generateToken(String username) throws AuthenticationException {

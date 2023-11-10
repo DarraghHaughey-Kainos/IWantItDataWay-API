@@ -1,5 +1,6 @@
 package org.kainos.ea.resources;
 
+import io.swagger.annotations.Api;
 import org.kainos.ea.api.HelloWorldService;
 import org.kainos.ea.client.ActionFailedException;
 
@@ -9,6 +10,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+@Api("I Want It Data Way API")
 @Path("/api")
 public class HelloWorldController {
     private final HelloWorldService helloWorldService = new HelloWorldService();

@@ -8,6 +8,7 @@ import org.kainos.ea.client.AuthenticationException;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 
 import javax.crypto.spec.SecretKeySpec;
+import javax.swing.*;
 import java.sql.*;
 import java.util.Base64;
 import java.util.Date;
@@ -19,50 +20,57 @@ public class AuthDao {
     private final Key hmacKey;
     Argon2PasswordEncoder encoder = new Argon2PasswordEncoder(32, 64, 1, 15 * 1024, 2);
 
-    public AuthDao() throws AuthenticationException {
+    public AuthDao() throws ActionFailedException {
         try {
             hmacKey = new SecretKeySpec(Base64.getDecoder().decode(System.getenv("JWT_SECRET")),
                     SignatureAlgorithm.HS256.getJcaName());
         } catch (Exception e) {
-            throw new AuthenticationException("JWT_SECRET not set up correctly");
+            throw new ActionFailedException("JWT_SECRET not set up correctly");
         }
     }
 
-    public boolean validateLogin(Connection c, Credential credential) throws AuthenticationException, ActionFailedException, SQLException {
-        String selectQuery = "SELECT password FROM `user` WHERE username = ?";
-        PreparedStatement st = c.prepareStatement(selectQuery);
+    public void registerUser(Connection c, Credential credential) throws ActionFailedException {
+        try {
+            String encodedPassword = encoder.encode(credential.getPassword());
 
-        st.setString(1, credential.getUsername());
+            String insertQuery = "INSERT INTO user(username,password) VALUES(?,?)";
+            PreparedStatement st = c.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
 
-        ResultSet rs = st.executeQuery();
+            st.setString(1, credential.getUsername());
+            st.setString(2, encodedPassword);
 
-        if (rs.next()) {
-            String storedEncodedPassword = rs.getString("password");
-            return encoder.matches(credential.getPassword(), storedEncodedPassword);
+            int affectedRows = st.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new ActionFailedException("SQL Error: Creating user failed, no rows affected.");
+            }
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            throw new ActionFailedException("SQL Error: User could be registered");
         }
-        return false;
     }
 
+    public boolean validateLogin(Connection c, Credential credential) throws ActionFailedException {
+        try {
+            String selectQuery = "SELECT password FROM `user` WHERE username = ?";
+            PreparedStatement st = c.prepareStatement(selectQuery);
 
-    public boolean registerUser(Connection c, Credential credential) throws AuthenticationException, SQLException {
-        String encodedPassword = encoder.encode(credential.getPassword());
+            st.setString(1, credential.getUsername());
 
-        String insertQuery = "INSERT INTO user(username,password) VALUES(?,?)";
-        PreparedStatement st = c.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
+            ResultSet rs = st.executeQuery();
 
-        st.setString(1, credential.getUsername());
-        st.setString(2, encodedPassword);
-
-        int affectedRows = st.executeUpdate();
-
-        if (affectedRows > 0) {
-            return true;
+            if (rs.next()) {
+                String storedEncodedPassword = rs.getString("password");
+                return encoder.matches(credential.getPassword(), storedEncodedPassword);
+            }
+            return false;
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            throw new ActionFailedException("SQL Error: Login could not be validated");
         }
-
-        throw new AuthenticationException("Failed to register user");
     }
 
-    public String generateToken(String username) throws AuthenticationException {
+    public String generateToken(String username) throws ActionFailedException {
         Date currentDate = new Date();
 
         String token = Jwts.builder()
@@ -76,7 +84,7 @@ public class AuthDao {
             return token;
         }
 
-        throw new AuthenticationException("Failed to create token");
+        throw new ActionFailedException("Failed to create token");
     }
 
     public Claims parseToken(String tokenString) throws AuthenticationException {

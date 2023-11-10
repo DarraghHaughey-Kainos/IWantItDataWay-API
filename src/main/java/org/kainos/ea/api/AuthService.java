@@ -17,18 +17,16 @@ public class AuthService {
         this.authDao = authDao;
     }
 
-    public String login(Credential login) throws ActionFailedException, AuthenticationException, SQLException {
+    public String register(Credential login) throws ActionFailedException {
+        authDao.registerUser(databaseConnector.getConnection(), login);
+        return authDao.generateToken(login.getUsername());
+    }
+
+    public String login(Credential login) throws ActionFailedException, AuthenticationException {
         if (authDao.validateLogin(databaseConnector.getConnection(), login)) {
             return authDao.generateToken(login.getUsername());
         }
         throw new AuthenticationException("The provided credentials could not be authenticated");
-    }
-
-    public String register(Credential login) throws AuthenticationException, ActionFailedException, SQLException {
-        if (authDao.registerUser(databaseConnector.getConnection(), login)) {
-            return authDao.generateToken(login.getUsername());
-        }
-        throw new AuthenticationException("The account could not be created");
     }
 
     public void isValidToken(String token) throws AuthenticationException {

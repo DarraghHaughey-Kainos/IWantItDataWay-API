@@ -30,7 +30,7 @@ public class HelloWorldController {
         helloWorldService = new HelloWorldService(databaseConnector, new HelloWorldDao());
         try {
             authService = new AuthService(databaseConnector, new AuthDao());
-        } catch (AuthenticationException e) {
+        } catch (ActionFailedException e) {
             System.err.println(e.getMessage());
         }
     }

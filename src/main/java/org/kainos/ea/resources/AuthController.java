@@ -25,7 +25,7 @@ public class AuthController {
         DatabaseConnector databaseConnector = new DatabaseConnector();
         try {
             authService = new AuthService(databaseConnector, new AuthDao());
-        } catch (AuthenticationException e) {
+        } catch (ActionFailedException e) {
             System.err.println(e.getMessage());
         }
     }
@@ -36,10 +36,7 @@ public class AuthController {
     public Response register(Credential login) {
         try {
             return Response.ok(authService.register(login)).build();
-        } catch(AuthenticationException e) {
-            System.err.println(e.getMessage());
-            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
-        } catch(ActionFailedException | SQLException e){
+        } catch(ActionFailedException e){
             System.err.println(e.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }
@@ -55,7 +52,7 @@ public class AuthController {
         } catch(AuthenticationException e) {
             System.err.println(e.getMessage());
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
-        } catch(ActionFailedException | SQLException e){
+        } catch(ActionFailedException e){
             System.err.println(e.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }

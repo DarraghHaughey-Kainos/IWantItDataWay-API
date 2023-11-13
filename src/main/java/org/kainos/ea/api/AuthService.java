@@ -1,12 +1,11 @@
 package org.kainos.ea.api;
 
+import io.jsonwebtoken.Claims;
 import org.kainos.ea.cli.Credential;
 import org.kainos.ea.client.ActionFailedException;
 import org.kainos.ea.client.AuthenticationException;
 import org.kainos.ea.db.AuthDao;
 import org.kainos.ea.db.DatabaseConnector;
-
-import java.sql.SQLException;
 
 public class AuthService {
     private  final DatabaseConnector databaseConnector;
@@ -25,14 +24,15 @@ public class AuthService {
     public String login(Credential login) throws ActionFailedException, AuthenticationException {
         if (authDao.validateLogin(databaseConnector.getConnection(), login)) {
             return authDao.generateToken(login.getUsername());
+        } else {
+            throw new AuthenticationException("The provided credentials could not be authenticated");
         }
-        throw new AuthenticationException("The provided credentials could not be authenticated");
     }
 
-    public void isValidToken(String token) throws AuthenticationException {
+    public Claims isValidToken(String token) throws AuthenticationException {
         if (token == null) {
             throw new AuthenticationException("No token provided");
         }
-        authDao.parseToken(token);
+        return authDao.parseToken(token);
     }
 }

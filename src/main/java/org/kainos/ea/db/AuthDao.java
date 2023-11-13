@@ -8,7 +8,6 @@ import org.kainos.ea.client.AuthenticationException;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 
 import javax.crypto.spec.SecretKeySpec;
-import javax.swing.*;
 import java.sql.*;
 import java.util.Base64;
 import java.util.Date;
@@ -67,6 +66,26 @@ public class AuthDao {
         } catch (SQLException e) {
             System.err.println(e.getMessage());
             throw new ActionFailedException("SQL Error: Login could not be validated");
+        }
+    }
+
+    public boolean deleteUser(Connection c, Credential credential) throws ActionFailedException {
+        try {
+            String selectQuery = "DELETE FROM user WHERE username=?;";
+            PreparedStatement st = c.prepareStatement(selectQuery);
+
+            st.setString(1, credential.getUsername());
+
+            int affectedRows = st.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new ActionFailedException("SQL Error: Deleting user failed, no rows affected.");
+            }
+
+            return true;
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            throw new ActionFailedException("SQL Error: Login could not be deleted");
         }
     }
 

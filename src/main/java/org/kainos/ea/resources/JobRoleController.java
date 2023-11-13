@@ -11,11 +11,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.sql.SQLException;
-
 @Path("/api")
-
 public class JobRoleController {
-    private static JobRoleService jobRoleService;
+    private JobRoleService jobRoleService;
 
     public JobRoleController() {
         DatabaseConnector databaseConnector = new DatabaseConnector();
@@ -31,8 +29,8 @@ public class JobRoleController {
                         .status(Response.Status.OK)
                         .entity(jobRoleService.getJobRoles())
                         .build();
-        } catch (SQLException | ActionFailedException e) {
-            System.out.println(e);
+        } catch (ActionFailedException e) {
+            System.out.println(e.getMessage());
             return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
         }
     }

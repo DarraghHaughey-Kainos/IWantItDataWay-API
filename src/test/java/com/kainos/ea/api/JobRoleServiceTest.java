@@ -27,11 +27,8 @@ class JobRoleServiceTest {
     JobRoleService jobRoleService = new JobRoleService(databaseConnector, jobRoleDao);
 
     Connection conn;
-    /*
-    * expect a list of jobRoles to be returned
-    * */
     @Test
-    void getJobRoles_shouldReturnJobRoles_whenDaoReturnsJobRoles() throws SQLException {
+    void getJobRoles_shouldReturnJobRoles_whenDaoReturnsJobRoles() throws SQLException, ActionFailedException {
         JobRole jobRole1 = new JobRole(1,"Testing Engineer");
         JobRole jobRole2 = new JobRole(2,"Testing2 Engineer");
         JobRole jobRole3 = new JobRole(3,"Testing3 Engineer");
@@ -49,12 +46,8 @@ class JobRoleServiceTest {
         assertEquals(result, jobRoles);
     }
 
-    /*
-    *
-    * */
-
     @Test
-    void getEmployees_shouldReturnSQLException_whenDaoReturnsSQLException() throws SQLException {
+    void getEmployees_shouldReturnSQLException_whenDaoReturnsSQLException() throws SQLException, ActionFailedException {
 
         Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
 

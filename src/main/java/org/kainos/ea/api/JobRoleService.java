@@ -17,14 +17,7 @@ public class JobRoleService {
         this.jobRoleDao = jobRoleDao;
     }
 
-    public List<JobRole> getJobRoles() throws ActionFailedException, SQLException {
-
-        try{
-            return jobRoleDao.getJobRoles(databaseConnector.getConnection());
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-
-            throw new ActionFailedException("Failed to get Job Roles");
-        }
+    public List<JobRole> getJobRoles() throws ActionFailedException {
+        return jobRoleDao.getJobRoles(databaseConnector.getConnection());
     }
 }

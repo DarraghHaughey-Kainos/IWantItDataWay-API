@@ -19,10 +19,6 @@ public class JobRoleControllerTest {
             new ResourceConfigurationSourceProvider()
     );
 
-
-    /*
-     * Successful test that should return a list of job roles
-     * */
     @Test
     void getJobRoles_shouldReturnListOfJobRoles() {
         List<JobRole> response = APP.client().target("http://localhost:8080/api/job-roles")

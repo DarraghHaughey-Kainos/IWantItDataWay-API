@@ -38,7 +38,6 @@ public class HelloWorldController {
     public Response helloWorld(@HeaderParam("Authorization") String token) {
         try {
             authService.isValidToken(token);
-
             return Response
                     .status(Response.Status.OK)
                     .entity(helloWorldService.getHelloWorld())

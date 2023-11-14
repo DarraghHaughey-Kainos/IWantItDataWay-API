@@ -21,5 +21,5 @@ To see your applications Swagger UI `http://localhost:8080/swagger`
 
 Tests
 ---
-1. Run `mvn clean test` to run unit tests.
+1. Run `mvn clean test` to run tests.
 2. Run `mvn clean integration-test` to run integration tests.

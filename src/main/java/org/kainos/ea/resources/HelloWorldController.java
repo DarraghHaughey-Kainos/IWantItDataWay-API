@@ -9,10 +9,7 @@ import org.kainos.ea.db.AuthDao;
 import org.kainos.ea.db.DatabaseConnector;
 import org.kainos.ea.db.HelloWorldDao;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -38,7 +35,7 @@ public class HelloWorldController {
     @GET
     @Path("/hello-world")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response helloWorld(@QueryParam("token") String token) {
+    public Response helloWorld(@HeaderParam("Authorization") String token) {
         try {
             authService.isValidToken(token);
 

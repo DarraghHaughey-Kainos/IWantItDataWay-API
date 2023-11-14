@@ -82,13 +82,13 @@ public class AuthServiceTest {
     }
 
     @Test
-    void isValidToken_shouldReturnClaims_whenValidTokenProvided() throws AuthenticationException {
+    void isValidToken_shouldReturnClaims_whenTokenSuccessfullyParsed() throws AuthenticationException {
         Claims expectedResult = new DefaultClaims();
-        String validToken = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImhyIiwiaWF0IjoxNjk5ODY2NTYxLCJleHAiOjE2OTk4NzAxNjF9.JJItgRP2HmaRZNt9MC-9afPNQi9zXDJfZJjZZxGZHTk";
+        String token = "test-token";
 
-        Mockito.when(authDao.parseToken(validToken)).thenReturn(expectedResult);
+        Mockito.when(authDao.parseToken(token)).thenReturn(expectedResult);
 
-        Claims result = authService.isValidToken(validToken);
+        Claims result = authService.isValidToken(token);
         assertEquals(result, expectedResult);
     }
 }

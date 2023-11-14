@@ -48,11 +48,11 @@ public class AuthDao {
             int affectedRows = st.executeUpdate();
 
             if (affectedRows == 0) {
-                throw new ActionFailedException("SQL Error: Creating user failed, no rows affected.");
+                throw new ActionFailedException("Creating user failed, no rows affected.");
             }
         } catch (SQLException e) {
             System.err.println(e.getMessage());
-            throw new ActionFailedException("SQL Error: User could be registered");
+            throw new ActionFailedException("User could be registered");
         }
     }
 
@@ -71,7 +71,7 @@ public class AuthDao {
             return false;
         } catch (SQLException e) {
             System.err.println(e.getMessage());
-            throw new ActionFailedException("SQL Error: Login could not be validated");
+            throw new ActionFailedException("Login could not be validated");
         }
     }
 
@@ -84,13 +84,13 @@ public class AuthDao {
             int affectedRows = st.executeUpdate();
 
             if (affectedRows == 0) {
-                throw new ActionFailedException("SQL Error: Deleting user failed, no rows affected.");
+                throw new ActionFailedException("Deleting user failed, no rows affected.");
             }
 
             return true;
         } catch (SQLException e) {
             System.err.println(e.getMessage());
-            throw new ActionFailedException("SQL Error: Login could not be deleted");
+            throw new ActionFailedException("Login could not be deleted");
         }
     }
 

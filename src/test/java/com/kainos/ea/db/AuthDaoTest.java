@@ -1,6 +1,6 @@
 package com.kainos.ea.db;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.kainos.ea.cli.Credential;

@@ -37,12 +37,11 @@ public class AuthDao {
     }
 
     public void registerUser(Connection c, Credential credential) throws ActionFailedException {
-        try {
-            String encodedPassword = encoder.encode(credential.getPassword());
+        String encodedPassword = encoder.encode(credential.getPassword());
 
-            String insertQuery = "INSERT INTO user(username,password) VALUES(?,?)";
-            PreparedStatement st = c.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
+        String insertQuery = "INSERT INTO user(username,password) VALUES(?,?)";
 
+        try(PreparedStatement st = c.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)) {
             st.setString(1, credential.getUsername());
             st.setString(2, encodedPassword);
 
@@ -58,10 +57,9 @@ public class AuthDao {
     }
 
     public boolean validateLogin(Connection c, Credential credential) throws ActionFailedException {
-        try {
-            String selectQuery = "SELECT password FROM `user` WHERE username = ?";
-            PreparedStatement st = c.prepareStatement(selectQuery);
+        String selectQuery = "SELECT password FROM `user` WHERE username = ?";
 
+        try(PreparedStatement st = c.prepareStatement(selectQuery)) {
             st.setString(1, credential.getUsername());
 
             ResultSet rs = st.executeQuery();
@@ -78,10 +76,9 @@ public class AuthDao {
     }
 
     public boolean deleteUser(Connection c, Credential credential) throws ActionFailedException {
-        try {
-            String selectQuery = "DELETE FROM user WHERE username=?;";
-            PreparedStatement st = c.prepareStatement(selectQuery);
+        String selectQuery = "DELETE FROM user WHERE username=?;";
 
+        try(PreparedStatement st = c.prepareStatement(selectQuery)) {
             st.setString(1, credential.getUsername());
 
             int affectedRows = st.executeUpdate();
@@ -127,5 +124,4 @@ public class AuthDao {
             throw new AuthenticationException("Invalid token");
         }
     }
-
 }

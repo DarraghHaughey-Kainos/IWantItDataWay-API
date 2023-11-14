@@ -1,6 +1,10 @@
 package org.kainos.ea.db;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
 import org.apache.commons.lang3.time.DateUtils;
 import org.kainos.ea.cli.Credential;
 import org.kainos.ea.client.ActionFailedException;
@@ -8,7 +12,11 @@ import org.kainos.ea.client.AuthenticationException;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 
 import javax.crypto.spec.SecretKeySpec;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.Base64;
 import java.util.Date;
 import java.security.Key;

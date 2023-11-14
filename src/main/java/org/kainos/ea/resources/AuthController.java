@@ -2,7 +2,6 @@ package org.kainos.ea.resources;
 
 import io.swagger.annotations.Api;
 import org.kainos.ea.api.AuthService;
-import org.kainos.ea.api.HelloWorldService;
 import org.kainos.ea.cli.Credential;
 import org.kainos.ea.client.ActionFailedException;
 import org.kainos.ea.client.AuthenticationException;
@@ -14,7 +13,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.sql.SQLException;
 
 @Api("I Want It Data Way Auth API")
 @Path("/api")

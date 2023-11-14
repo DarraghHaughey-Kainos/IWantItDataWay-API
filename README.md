@@ -1,6 +1,4 @@
-# I Want It Data Way API
-
-Environment Variables
+I Want It Data Way API
 ---
 Before running this application, you will need to set up the following environment variables to enable a database connection:
 ```

@@ -9,8 +9,11 @@ import java.sql.SQLException;
 public class DatabaseConnector {
     private static Connection conn;
 
-    public Connection getConnection() throws ActionFailedException {
-        String user, password, host, name;
+    public static Connection getConnection() throws ActionFailedException {
+        String user;
+        String password;
+        String host;
+        String name;
 
         try {
             if (conn!= null && !conn.isClosed()) { return  conn; }
@@ -29,7 +32,7 @@ public class DatabaseConnector {
             return conn;
 
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            System.err.println("DB connection problem");
             throw new ActionFailedException("SQL Error: DB connection problem");
         }
     }

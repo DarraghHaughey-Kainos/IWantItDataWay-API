@@ -6,6 +6,7 @@ DB_HOST
 DB_USERNAME
 DB_PASSWORD
 DB_NAME
+JWT_SECRET
 ```
 
 How to start the DropwizardWebService application

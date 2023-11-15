@@ -35,7 +35,7 @@ public class AuthDaoTest {
 
     @Test
     void parseToken_shouldReturnClaims_whenValidTokenProvided() throws ActionFailedException, AuthenticationException {
-        String expectedResult = login.getUsername();
+        String expectedResult = login.getEmail();
         String token = authDao.generateToken(expectedResult);
         Claims claims = authDao.parseToken(token);
 

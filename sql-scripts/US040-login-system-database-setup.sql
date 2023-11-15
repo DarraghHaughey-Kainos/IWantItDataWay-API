@@ -1,10 +1,7 @@
 USE IWantItDataWay_StephenH;
 
 CREATE TABLE `user` (
-	username VARCHAR(64) NOT NULL,
-	password VARCHAR(64) NOT NULL,
-	PRIMARY KEY (username)
+	email VARCHAR(255) NOT NULL,
+	password VARCHAR(255) NOT NULL,
+	PRIMARY KEY (email)
 );
-
-INSERT INTO `user`(username, password) VALUES
-("hr","hr");

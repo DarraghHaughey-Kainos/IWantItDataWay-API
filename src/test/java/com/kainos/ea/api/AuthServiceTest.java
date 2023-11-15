@@ -8,8 +8,12 @@ import org.kainos.ea.api.AuthService;
 import org.kainos.ea.cli.Credential;
 import org.kainos.ea.client.ActionFailedException;
 import org.kainos.ea.client.AuthenticationException;
+import org.kainos.ea.client.ValidationException;
+
+import org.kainos.ea.core.CredentialValidator;
 import org.kainos.ea.db.AuthDao;
 import org.kainos.ea.db.DatabaseConnector;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -20,20 +24,22 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(MockitoExtension.class)
 public class AuthServiceTest {
     AuthDao authDao = Mockito.mock(AuthDao.class);
+    CredentialValidator credentialValidator = Mockito.mock(CredentialValidator.class);
     DatabaseConnector databaseConnector = Mockito.mock(DatabaseConnector.class);
-    AuthService authService = new AuthService(databaseConnector, authDao);
+    AuthService authService = new AuthService(databaseConnector, authDao, credentialValidator);
     Connection conn;
 
-    Credential login = new Credential("TestUser", "Test");
+    Credential login = new Credential("test@test", "Test");
 
     @Test
-    void register_shouldReturnToken_whenDaoDoesNotThrowException() throws ActionFailedException {
+    void register_shouldReturnToken_whenDaoDoesNotThrowException() throws ActionFailedException, ValidationException {
         String expectedResult = "test_jwt_token";
         Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
-        Mockito.when(authDao.generateToken(login.getUsername())).thenReturn(expectedResult);
+        Mockito.when(authDao.generateToken(login.getEmail())).thenReturn(expectedResult);
 
         String result = authService.register(login);
         assertEquals(result, expectedResult);
+
     }
 
     @Test
@@ -45,13 +51,22 @@ public class AuthServiceTest {
                 () -> authService.register(login));
     }
 
+    @Test
+    void register_shouldThrowValidationFailedException_whenValidatorThrowsValidationException() throws ActionFailedException, ValidationException {
+        Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
+        Mockito.doThrow(ValidationException.class).when(credentialValidator).isValidUser(login);
+
+        assertThrows(ValidationException.class,
+                () -> authService.register(login));
+    }
+
 
     @Test
     void login_shouldReturnToken_whenDaoReturnsTrue() throws ActionFailedException, AuthenticationException {
         String expectedResult = "test_jwt_token";
         Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
         Mockito.when(authDao.validateLogin(conn, login)).thenReturn(true);
-        Mockito.when(authDao.generateToken(login.getUsername())).thenReturn(expectedResult);
+        Mockito.when(authDao.generateToken(login.getEmail())).thenReturn(expectedResult);
 
         String result = authService.login(login);
         assertEquals(result, expectedResult);

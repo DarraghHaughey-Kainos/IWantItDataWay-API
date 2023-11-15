@@ -5,6 +5,7 @@ import org.kainos.ea.api.AuthService;
 import org.kainos.ea.api.HelloWorldService;
 import org.kainos.ea.client.ActionFailedException;
 import org.kainos.ea.client.AuthenticationException;
+import org.kainos.ea.core.CredentialValidator;
 import org.kainos.ea.db.AuthDao;
 import org.kainos.ea.db.DatabaseConnector;
 import org.kainos.ea.db.HelloWorldDao;
@@ -29,7 +30,7 @@ public class HelloWorldController {
         DatabaseConnector databaseConnector = new DatabaseConnector();
         helloWorldService = new HelloWorldService(databaseConnector, new HelloWorldDao());
         try {
-            authService = new AuthService(databaseConnector, new AuthDao());
+            authService = new AuthService(databaseConnector, new AuthDao(), new CredentialValidator());
         } catch (ActionFailedException e) {
             System.err.println(e.getMessage());
         }

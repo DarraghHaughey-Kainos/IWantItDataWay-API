@@ -5,6 +5,8 @@ import org.kainos.ea.api.AuthService;
 import org.kainos.ea.cli.Credential;
 import org.kainos.ea.client.ActionFailedException;
 import org.kainos.ea.client.AuthenticationException;
+import org.kainos.ea.client.ValidationException;
+import org.kainos.ea.core.CredentialValidator;
 import org.kainos.ea.db.AuthDao;
 import org.kainos.ea.db.DatabaseConnector;
 
@@ -22,10 +24,15 @@ public class AuthController {
     public AuthController() {
         DatabaseConnector databaseConnector = new DatabaseConnector();
         try {
-            authService = new AuthService(databaseConnector, new AuthDao());
+            authService = new AuthService(databaseConnector, new AuthDao(), new CredentialValidator());
         } catch (ActionFailedException e) {
             System.err.println(e.getMessage());
         }
+    }
+
+    // Constructor for testing
+    public AuthController(AuthService authService) {
+        this.authService = authService;
     }
 
     @POST
@@ -37,6 +44,9 @@ public class AuthController {
         } catch(ActionFailedException e){
             System.err.println(e.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+        } catch (ValidationException e) {
+            System.err.println(e.getMessage());
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
     }
 
@@ -49,7 +59,7 @@ public class AuthController {
             return Response.ok(token).build();
         } catch(AuthenticationException e) {
             System.err.println(e.getMessage());
-            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+            return Response.status(Response.Status.UNAUTHORIZED).entity(e.getMessage()).build();
         } catch(ActionFailedException e){
             System.err.println(e.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();

@@ -39,10 +39,10 @@ public class AuthDao {
     public void registerUser(Connection c, Credential credential) throws ActionFailedException {
         String encodedPassword = encoder.encode(credential.getPassword());
 
-        String insertQuery = "INSERT INTO user(username,password) VALUES(?,?)";
+        String insertQuery = "INSERT INTO user(email,password) VALUES(?,?)";
 
         try(PreparedStatement st = c.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)) {
-            st.setString(1, credential.getUsername());
+            st.setString(1, credential.getEmail());
             st.setString(2, encodedPassword);
 
             int affectedRows = st.executeUpdate();
@@ -57,10 +57,10 @@ public class AuthDao {
     }
 
     public boolean validateLogin(Connection c, Credential credential) throws ActionFailedException {
-        String selectQuery = "SELECT password FROM `user` WHERE username = ?";
+        String selectQuery = "SELECT password FROM `user` WHERE email = ?";
 
         try(PreparedStatement st = c.prepareStatement(selectQuery)) {
-            st.setString(1, credential.getUsername());
+            st.setString(1, credential.getEmail());
 
             ResultSet rs = st.executeQuery();
 
@@ -76,10 +76,10 @@ public class AuthDao {
     }
 
     public boolean deleteUser(Connection c, Credential credential) throws ActionFailedException {
-        String selectQuery = "DELETE FROM user WHERE username=?;";
+        String selectQuery = "DELETE FROM user WHERE email=?;";
 
         try(PreparedStatement st = c.prepareStatement(selectQuery)) {
-            st.setString(1, credential.getUsername());
+            st.setString(1, credential.getEmail());
 
             int affectedRows = st.executeUpdate();
 

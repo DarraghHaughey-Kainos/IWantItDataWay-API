@@ -21,12 +21,13 @@ public class AuthIntegrationTest {
             new ResourceConfigurationSourceProvider()
     );
 
+    Credential login = new Credential(
+            "AuthIntegrationTest@test.com",
+            "AuthIntegrationTest"
+    );
+
     @Test
     void postRegister_shouldReturnTokenOfUser() {
-        Credential login = new Credential(
-                "AuthIntegrationTest",
-                "AuthIntegrationTest"
-        );
 
         String token = APP.client().target("http://localhost:8080/api/register")
                 .request()
@@ -38,10 +39,6 @@ public class AuthIntegrationTest {
 
     @Test
     void postLogin_shouldReturnTokenOfUser() {
-        Credential login = new Credential(
-                "AuthIntegrationTest",
-                "AuthIntegrationTest"
-        );
 
         String token = APP.client().target("http://localhost:8080/api/login")
                 .request()

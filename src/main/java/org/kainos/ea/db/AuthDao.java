@@ -52,7 +52,7 @@ public class AuthDao {
             }
         } catch (SQLException e) {
             System.err.println(e.getMessage());
-            throw new ActionFailedException("User could be registered");
+            throw new ActionFailedException("User could not be registered");
         }
     }
 

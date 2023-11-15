@@ -22,6 +22,10 @@ public class JobRoleController {
         jobRoleService = new JobRoleService(databaseConnector, new JobRoleDao());
     }
 
+    public JobRoleController(JobRoleService jobRoleService) {
+        this.jobRoleService = jobRoleService;
+    }
+
     @GET
     @Path("/job-roles")
     @Produces(MediaType.APPLICATION_JSON)
@@ -36,5 +40,4 @@ public class JobRoleController {
             return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
         }
     }
-
 }

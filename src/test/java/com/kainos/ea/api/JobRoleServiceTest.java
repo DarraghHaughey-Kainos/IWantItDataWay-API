@@ -28,9 +28,9 @@ class JobRoleServiceTest {
     Connection conn;
     @Test
     void getJobRoles_shouldReturnJobRoles_whenDaoReturnsJobRoles() throws ActionFailedException {
-        JobRole jobRole1 = new JobRole(1,"Testing Engineer");
-        JobRole jobRole2 = new JobRole(2,"Testing2 Engineer");
-        JobRole jobRole3 = new JobRole(3,"Testing3 Engineer");
+        JobRole jobRole1 = new JobRole(1,"Testing Engineer", "Manager");
+        JobRole jobRole2 = new JobRole(2,"Testing2 Engineer", "Manager");
+        JobRole jobRole3 = new JobRole(3,"Testing3 Engineer", "Manager");
 
         List<JobRole> jobRoles = new ArrayList<>();
         jobRoles.add(jobRole1);

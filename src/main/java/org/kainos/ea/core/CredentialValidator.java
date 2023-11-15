@@ -3,7 +3,6 @@ package org.kainos.ea.core;
 import org.kainos.ea.cli.Credential;
 import org.kainos.ea.client.ValidationException;
 
-
 import java.util.regex.Pattern;
 
 public class CredentialValidator {

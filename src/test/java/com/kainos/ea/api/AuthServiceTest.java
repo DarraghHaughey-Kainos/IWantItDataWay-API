@@ -13,7 +13,6 @@ import org.kainos.ea.client.ValidationException;
 import org.kainos.ea.core.CredentialValidator;
 import org.kainos.ea.db.AuthDao;
 import org.kainos.ea.db.DatabaseConnector;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 

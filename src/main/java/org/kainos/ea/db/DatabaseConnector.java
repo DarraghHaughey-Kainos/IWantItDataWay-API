@@ -8,7 +8,7 @@ import java.sql.SQLException;
 public class DatabaseConnector {
     private static Connection conn;
 
-    public static Connection getConnection() throws ActionFailedException {
+    public Connection getConnection() throws ActionFailedException {
         String user;
         String password;
         String host;

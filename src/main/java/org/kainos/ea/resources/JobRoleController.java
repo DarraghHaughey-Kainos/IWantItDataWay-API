@@ -26,8 +26,8 @@ public class JobRoleController {
     @Path("/job-roles")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getJobRoles(){
-            try {
-                return Response
+        try {
+            return Response
                         .status(Response.Status.OK)
                         .entity(jobRoleService.getJobRoles())
                         .build();

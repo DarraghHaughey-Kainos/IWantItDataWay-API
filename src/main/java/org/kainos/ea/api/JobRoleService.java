@@ -4,8 +4,6 @@ import org.kainos.ea.cli.JobRole;
 import org.kainos.ea.client.ActionFailedException;
 import org.kainos.ea.db.DatabaseConnector;
 import org.kainos.ea.db.JobRoleDao;
-
-import java.sql.SQLException;
 import java.util.List;
 
 public class JobRoleService {

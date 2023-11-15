@@ -4,8 +4,6 @@ import org.kainos.ea.cli.HelloWorld;
 import org.kainos.ea.client.ActionFailedException;
 import org.kainos.ea.db.DatabaseConnector;
 import org.kainos.ea.db.HelloWorldDao;
-
-import javax.xml.crypto.Data;
 import java.sql.SQLException;
 import java.util.List;
 

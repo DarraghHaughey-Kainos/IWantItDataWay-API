@@ -29,8 +29,8 @@ public class JobRoleDao {
 
             return jobRoleList;
         } catch (SQLException e){
-           System.err.println(e.getMessage());
-           throw new ActionFailedException("Failed to get Job Roles");
+            System.err.println(e.getMessage());
+            throw new ActionFailedException("Failed to get Job Roles");
         }
 
     }

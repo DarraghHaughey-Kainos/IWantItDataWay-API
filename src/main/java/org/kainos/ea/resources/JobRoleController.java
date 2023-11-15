@@ -1,5 +1,6 @@
 package org.kainos.ea.resources;
 
+import io.swagger.annotations.Api;
 import org.eclipse.jetty.http.HttpStatus;
 import org.kainos.ea.api.JobRoleService;
 import org.kainos.ea.client.ActionFailedException;
@@ -10,10 +11,11 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.sql.SQLException;
+
+@Api("I Want It Data Way API")
 @Path("/api")
 public class JobRoleController {
-    private JobRoleService jobRoleService;
+    private final JobRoleService jobRoleService;
 
     public JobRoleController() {
         DatabaseConnector databaseConnector = new DatabaseConnector();

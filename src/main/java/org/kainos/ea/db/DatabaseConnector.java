@@ -1,8 +1,6 @@
 package org.kainos.ea.db;
 
-import com.mysql.cj.jdbc.exceptions.SQLError;
 import org.kainos.ea.client.ActionFailedException;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;

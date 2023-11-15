@@ -9,7 +9,6 @@ import org.kainos.ea.db.DatabaseConnector;
 import org.kainos.ea.db.JobRoleDao;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -28,7 +27,7 @@ class JobRoleServiceTest {
 
     Connection conn;
     @Test
-    void getJobRoles_shouldReturnJobRoles_whenDaoReturnsJobRoles() throws SQLException, ActionFailedException {
+    void getJobRoles_shouldReturnJobRoles_whenDaoReturnsJobRoles() throws ActionFailedException {
         JobRole jobRole1 = new JobRole(1,"Testing Engineer");
         JobRole jobRole2 = new JobRole(2,"Testing2 Engineer");
         JobRole jobRole3 = new JobRole(3,"Testing3 Engineer");
@@ -47,15 +46,14 @@ class JobRoleServiceTest {
     }
 
     @Test
-    void getEmployees_shouldReturnSQLException_whenDaoReturnsSQLException() throws SQLException, ActionFailedException {
+    void getEmployees_shouldReturnSQLException_whenDaoReturnsSQLException() throws ActionFailedException {
 
         Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
 
-        Mockito.when(jobRoleDao.getJobRoles(conn)).thenThrow(SQLException.class);
+        Mockito.when(jobRoleDao.getJobRoles(conn)).thenThrow(ActionFailedException.class);
 
         assertThrows(ActionFailedException.class, () -> {
             jobRoleService.getJobRoles();
         });
     }
-
 }

@@ -27,5 +27,4 @@ public class JobRoleControllerTest {
 
         Assertions.assertTrue(response.size() > 0);
     }
-
 }

@@ -19,15 +19,14 @@ public class CapabilityController {
 
     private final CapabilityService capabilityService;
 
-    public CapabilityController() {
-        DatabaseConnector databaseConnector = new DatabaseConnector();
-        capabilityService = new CapabilityService(databaseConnector, new CapabilityDao());
+    public CapabilityController(CapabilityService capabilityService) {
+        this.capabilityService = capabilityService;
     }
 
     @GET
     @Path("/capabilities")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllCapabilities(){
+    public Response getAllCapabilities() {
         try {
             return Response
                     .status(Response.Status.OK)

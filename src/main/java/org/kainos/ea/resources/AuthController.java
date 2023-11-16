@@ -6,9 +6,6 @@ import org.kainos.ea.cli.Credential;
 import org.kainos.ea.client.ActionFailedException;
 import org.kainos.ea.client.AuthenticationException;
 import org.kainos.ea.client.ValidationException;
-import org.kainos.ea.core.CredentialValidator;
-import org.kainos.ea.db.AuthDao;
-import org.kainos.ea.db.DatabaseConnector;
 
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;

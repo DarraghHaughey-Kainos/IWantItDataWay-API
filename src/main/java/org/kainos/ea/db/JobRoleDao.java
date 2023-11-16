@@ -12,8 +12,6 @@ import java.util.List;
 
 public class JobRoleDao {
 
-    DatabaseConnector databaseConnector = new DatabaseConnector();
-
     public List<JobRole> getJobRoles(Connection c) throws ActionFailedException {
         try (Statement st = c.createStatement()) {
             ResultSet rs = st.executeQuery("SELECT job_role_id, job_role_title, capability_name "

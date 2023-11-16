@@ -5,7 +5,6 @@ import org.eclipse.jetty.http.HttpStatus;
 import org.kainos.ea.api.JobRoleService;
 import org.kainos.ea.client.ActionFailedException;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;

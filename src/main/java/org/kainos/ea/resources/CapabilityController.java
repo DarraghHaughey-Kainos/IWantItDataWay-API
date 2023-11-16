@@ -4,8 +4,6 @@ import io.swagger.annotations.Api;
 import org.eclipse.jetty.http.HttpStatus;
 import org.kainos.ea.api.CapabilityService;
 import org.kainos.ea.client.ActionFailedException;
-import org.kainos.ea.db.CapabilityDao;
-import org.kainos.ea.db.DatabaseConnector;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

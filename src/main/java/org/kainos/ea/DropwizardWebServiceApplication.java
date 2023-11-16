@@ -33,7 +33,6 @@ public class DropwizardWebServiceApplication extends Application<DropwizardWebSe
                     final Environment environment) {
         // TODO: implement application
         environment.jersey().register(new JobRoleController());
-        environment.jersey().register(new CapabilityController());
 
     }
 }

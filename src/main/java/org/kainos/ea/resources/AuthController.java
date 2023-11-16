@@ -21,16 +21,6 @@ import javax.ws.rs.core.Response;
 public class AuthController {
     private AuthService authService;
 
-    public AuthController() {
-        DatabaseConnector databaseConnector = new DatabaseConnector();
-        try {
-            authService = new AuthService(databaseConnector, new AuthDao(), new CredentialValidator());
-        } catch (ActionFailedException e) {
-            System.err.println(e.getMessage());
-        }
-    }
-
-    // Constructor for testing
     public AuthController(AuthService authService) {
         this.authService = authService;
     }

@@ -1,7 +1,6 @@
 package org.kainos.ea.db;
 
 import org.kainos.ea.cli.JobRole;
-import org.kainos.ea.cli.JobRoleRequest;
 import org.kainos.ea.client.ActionFailedException;
 
 import java.sql.*;
@@ -14,14 +13,18 @@ public class JobRoleDao {
 
     public List<JobRole> getJobRoles(Connection c) throws ActionFailedException {
         try (Statement st = c.createStatement()) {
-            ResultSet rs = st.executeQuery("SELECT job_role_id, job_role_title FROM job_role;");
+            ResultSet rs = st.executeQuery("SELECT job_role_id, job_role_title, capability_name "
+                    + "FROM job_role "
+                    + "JOIN capability "
+                    + "USING(capability_id);");
 
             List<JobRole> jobRoleList = new ArrayList<>();
 
             while (rs.next()) {
                 JobRole jobRole = new JobRole(
                         rs.getInt("job_role_id"),
-                        rs.getString("job_role_title")
+                        rs.getString("job_role_title"),
+                        rs.getString("capability_name")
                 );
 
                 jobRoleList.add(jobRole);
@@ -35,34 +38,4 @@ public class JobRoleDao {
 
     }
 
-    public int createJobRoles(JobRoleRequest jobRoleRequest) throws ActionFailedException {
-
-        try{
-
-            Connection c = databaseConnector.getConnection();
-
-            String insertStatement = "INSERT INTO job_role (job_role_title, capability_id) VALUES (?, ?);";
-
-            PreparedStatement st = c.prepareStatement(insertStatement, Statement.RETURN_GENERATED_KEYS);
-
-            st.setString(1, jobRoleRequest.getJobRoleTitle());
-            st.setInt(2, jobRoleRequest.getCapability_id());
-
-            st.executeUpdate();
-
-            ResultSet resultSet = st.getGeneratedKeys();
-
-            if(!resultSet.next()){
-
-                throw new ActionFailedException("Failed to create job role " + jobRoleRequest);
-
-            }
-
-            return resultSet.getInt(1);
-
-        } catch (SQLException e) {
-            throw new ActionFailedException(e.getMessage() + jobRoleRequest.toString());
-        }
-
-    }
 }

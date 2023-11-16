@@ -29,3 +29,7 @@ ALTER TABLE job_role
 ADD CONSTRAINT fk_job_role_capability_id
 	FOREIGN KEY(capability_id)
     REFERENCES capability(capability_id);
+    
+SELECT job_role_id, job_role_title, capability_name FROM job_role
+JOIN capability
+USING(capability_id);

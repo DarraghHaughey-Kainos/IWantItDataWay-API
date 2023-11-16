@@ -1,7 +1,6 @@
 package org.kainos.ea.api;
 
 import org.kainos.ea.cli.JobRole;
-import org.kainos.ea.cli.JobRoleRequest;
 import org.kainos.ea.client.ActionFailedException;
 import org.kainos.ea.db.DatabaseConnector;
 import org.kainos.ea.db.JobRoleDao;
@@ -20,9 +19,4 @@ public class JobRoleService {
         return jobRoleDao.getJobRoles(databaseConnector.getConnection());
     }
 
-    public int createJobRole(JobRoleRequest jobRoleRequest) throws ActionFailedException{
-
-        return jobRoleDao.createJobRoles(jobRoleRequest);
-
-    }
 }

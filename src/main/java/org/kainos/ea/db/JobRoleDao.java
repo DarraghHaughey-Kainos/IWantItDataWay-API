@@ -18,7 +18,7 @@ public class JobRoleDao {
         try (Statement st = c.createStatement()) {
             ResultSet rs = st.executeQuery("SELECT job_role_id, job_role_title, capability_name "
                     + "FROM job_role "
-                    + "JOIN capability "
+                    + "LEFT JOIN capability "
                     + "USING(capability_id);");
 
             List<JobRole> jobRoleList = new ArrayList<>();

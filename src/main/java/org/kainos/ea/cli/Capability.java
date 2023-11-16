@@ -2,27 +2,27 @@ package org.kainos.ea.cli;
 
 public class Capability {
 
-    private int capability_id;
-    private String capability_name;
+    private int capabilityId;
+    private String capabilityName;
 
-    public Capability(int capability_id, String capability_name) {
-        this.capability_id = capability_id;
-        this.capability_name = capability_name;
+    public Capability(int capabilityId, String capabilityName) {
+        this.capabilityId = capabilityId;
+        this.capabilityName = capabilityName;
     }
 
-    public int getCapability_id() {
-        return capability_id;
+    public int getCapabilityId() {
+        return capabilityId;
     }
 
-    public void setCapability_id(int capability_id) {
-        this.capability_id = capability_id;
+    public void setCapabilityId(int capabilityId) {
+        this.capabilityId = capabilityId;
     }
 
-    public String getCapability_name() {
-        return capability_name;
+    public String getCapabilityName() {
+        return capabilityName;
     }
 
-    public void setCapability_name(String capability_name) {
-        this.capability_name = capability_name;
+    public void setCapabilityName(String capabilityName) {
+        this.capabilityName = capabilityName;
     }
 }

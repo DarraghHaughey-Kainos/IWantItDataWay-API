@@ -15,12 +15,8 @@ import javax.ws.rs.core.Response;
 @Api("I Want It Data Way API")
 @Path("/api")
 public class JobRoleController {
-    private final JobRoleService jobRoleService;
 
-    public JobRoleController() {
-        DatabaseConnector databaseConnector = new DatabaseConnector();
-        jobRoleService = new JobRoleService(databaseConnector, new JobRoleDao());
-    }
+    private final JobRoleService jobRoleService;
 
     public JobRoleController(JobRoleService jobRoleService) {
         this.jobRoleService = jobRoleService;

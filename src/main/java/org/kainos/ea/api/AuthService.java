@@ -12,7 +12,7 @@ import org.kainos.ea.db.DatabaseConnector;
 public class AuthService {
     private  final DatabaseConnector databaseConnector;
     private final AuthDao authDao;
-    CredentialValidator credentialValidator = new CredentialValidator();
+    CredentialValidator credentialValidator;
 
     public AuthService(DatabaseConnector databaseConnector, AuthDao authDao, CredentialValidator credentialValidator) {
         this.databaseConnector = databaseConnector;

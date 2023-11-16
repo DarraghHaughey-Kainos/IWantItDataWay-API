@@ -19,6 +19,11 @@ import javax.ws.rs.core.Response;
 public class BandController {
     private final BandService bandService;
 
+    public BandController() {
+        DatabaseConnector databaseConnector = new DatabaseConnector();
+        bandService = new BandService(databaseConnector, new BandDao());
+    }
+
     public BandController(BandService bandService) {
         this.bandService = bandService;
     }

@@ -3,7 +3,6 @@ package org.kainos.ea.resources;
 import io.swagger.annotations.Api;
 import org.eclipse.jetty.http.HttpStatus;
 import org.kainos.ea.api.JobRoleService;
-import org.kainos.ea.cli.JobRoleRequest;
 import org.kainos.ea.client.ActionFailedException;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -37,15 +36,4 @@ public class JobRoleController {
         }
     }
 
-    @POST
-    @Path("/job-role")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response createJobRole(JobRoleRequest jobRoleRequest){
-        try {
-            return Response.ok(jobRoleService.createJobRole(jobRoleRequest)).build();
-        } catch (ActionFailedException e) {
-            System.err.println(e.getMessage());
-            return Response.serverError().entity(e.getMessage()).build();
-        }
-    }
 }

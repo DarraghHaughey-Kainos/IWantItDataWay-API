@@ -13,7 +13,7 @@ import org.kainos.ea.cli.Capability;
 import java.util.List;
 
 @ExtendWith(DropwizardExtensionsSupport.class)
-public class CapabilityControllerTest {
+public class CapabilityIntegrationTest {
 
     static final DropwizardAppExtension<DropwizardWebServiceConfiguration> APP = new DropwizardAppExtension<>(
             DropwizardWebServiceApplication.class, null,

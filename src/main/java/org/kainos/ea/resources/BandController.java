@@ -3,6 +3,7 @@ package org.kainos.ea.resources;
 import io.swagger.annotations.Api;
 import org.eclipse.jetty.http.HttpStatus;
 import org.kainos.ea.api.BandService;
+import org.kainos.ea.api.JobRoleService;
 import org.kainos.ea.client.ActionFailedException;
 import org.kainos.ea.db.BandDao;
 import org.kainos.ea.db.DatabaseConnector;
@@ -22,6 +23,11 @@ public class BandController {
         DatabaseConnector databaseConnector = new DatabaseConnector();
         bandService = new BandService(databaseConnector, new BandDao());
     }
+
+    public BandController(BandService bandService) {
+        this.bandService = bandService;
+    }
+
     @GET
     @Path("/bands")
     @Produces(MediaType.APPLICATION_JSON)

@@ -4,14 +4,14 @@ import io.swagger.annotations.Api;
 import org.kainos.ea.api.AuthService;
 import org.kainos.ea.api.HelloWorldService;
 import org.kainos.ea.client.ActionFailedException;
+import org.kainos.ea.db.DatabaseConnector;
+import org.kainos.ea.db.HelloWorldDao;
 import org.kainos.ea.client.AuthenticationException;
 import org.kainos.ea.core.CredentialValidator;
 import org.kainos.ea.db.AuthDao;
-import org.kainos.ea.db.DatabaseConnector;
-import org.kainos.ea.db.HelloWorldDao;
 
-import javax.ws.rs.Path;
 import javax.ws.rs.GET;
+import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.core.MediaType;
@@ -23,9 +23,6 @@ public class HelloWorldController {
     private final HelloWorldService helloWorldService;
     private AuthService authService;
 
-    /**
-     * Default constructor catches error for environment variables not set up correctly.
-     */
     public HelloWorldController() {
         DatabaseConnector databaseConnector = new DatabaseConnector();
         helloWorldService = new HelloWorldService(databaseConnector, new HelloWorldDao());

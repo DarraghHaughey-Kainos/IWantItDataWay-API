@@ -12,12 +12,17 @@ import org.kainos.ea.db.AuthDao;
 import org.kainos.ea.db.DatabaseConnector;
 import org.kainos.ea.resources.AuthController;
 import org.kainos.ea.resources.HelloWorldController;
+import org.kainos.ea.api.JobRoleService;
+import org.kainos.ea.db.JobRoleDao;
+import org.kainos.ea.resources.JobRoleController;
 
 public class DropwizardWebServiceApplication extends Application<DropwizardWebServiceConfiguration> {
     private AuthService authService;
+    private JobRoleService jobRoleService;
 
     public DropwizardWebServiceApplication() {
         DatabaseConnector databaseConnector = new DatabaseConnector();
+        jobRoleService = new JobRoleService(databaseConnector, new JobRoleDao());
         try {
             authService = new AuthService(databaseConnector, new AuthDao(), new CredentialValidator());
         } catch (ActionFailedException e) {
@@ -50,6 +55,6 @@ public class DropwizardWebServiceApplication extends Application<DropwizardWebSe
         // TODO: implement application
         environment.jersey().register(new HelloWorldController());
         environment.jersey().register(new AuthController(authService));
+        environment.jersey().register(new JobRoleController(jobRoleService));
     }
-
 }

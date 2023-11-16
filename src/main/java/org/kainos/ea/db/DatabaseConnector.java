@@ -33,7 +33,7 @@ public class DatabaseConnector {
 
         } catch (SQLException e) {
             System.err.println("DB connection problem");
-            throw new ActionFailedException("DB connection problem");
+            throw new ActionFailedException("DB Connection Problem");
         }
     }
 }

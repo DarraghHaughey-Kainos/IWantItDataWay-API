@@ -20,7 +20,7 @@ public class DropwizardWebServiceApplication extends Application<DropwizardWebSe
 
     public DropwizardWebServiceApplication() {
         DatabaseConnector databaseConnector = new DatabaseConnector();
-        jobRoleService = new JobRoleService(databaseConnector, new JobRoleDao());
+        jobRoleService = new JobRoleService(databaseConnector, new JobRoleDao(), new BandDao());
         bandService = new BandService(databaseConnector, new BandDao());
     }
 

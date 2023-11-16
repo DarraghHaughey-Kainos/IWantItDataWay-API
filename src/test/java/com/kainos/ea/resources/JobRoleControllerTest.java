@@ -5,6 +5,7 @@ import org.kainos.ea.api.JobRoleService;
 import org.kainos.ea.cli.JobRole;
 import org.kainos.ea.cli.JobRoleRequest;
 import org.kainos.ea.client.ActionFailedException;
+import org.kainos.ea.client.DoesNotExistException;
 import org.kainos.ea.resources.JobRoleController;
 import org.mockito.Mockito;
 
@@ -54,7 +55,7 @@ public class JobRoleControllerTest {
     }
 
     @Test
-    void createJobRole_shouldReturn200Response_whenJobRoleServiceDoesNotThrowException() throws ActionFailedException {
+    void createJobRole_shouldReturn200Response_whenJobRoleServiceDoesNotThrowException() throws ActionFailedException, DoesNotExistException {
         int expectedId = 1;
         int expectedStatusCode = 200;
 
@@ -67,7 +68,7 @@ public class JobRoleControllerTest {
     }
 
     @Test
-    void createJobRole_shouldReturn500Response_whenJobRoleServiceThrowsActionFailedException() throws ActionFailedException {
+    void createJobRole_shouldReturn500Response_whenJobRoleServiceThrowsActionFailedException() throws ActionFailedException, DoesNotExistException {
         int expectedStatusCode = 500;
 
         Mockito.doThrow(ActionFailedException.class).when(jobRoleService).createJobRole(jobRoleRequest);

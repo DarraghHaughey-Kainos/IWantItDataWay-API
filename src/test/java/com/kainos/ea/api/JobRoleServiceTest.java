@@ -3,8 +3,12 @@ package com.kainos.ea.api;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.kainos.ea.api.JobRoleService;
+import org.kainos.ea.cli.Band;
 import org.kainos.ea.cli.JobRole;
+import org.kainos.ea.cli.JobRoleRequest;
 import org.kainos.ea.client.ActionFailedException;
+import org.kainos.ea.client.DoesNotExistException;
+import org.kainos.ea.db.BandDao;
 import org.kainos.ea.db.DatabaseConnector;
 import org.kainos.ea.db.JobRoleDao;
 import org.mockito.Mockito;
@@ -23,10 +27,15 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class JobRoleServiceTest {
     DatabaseConnector databaseConnector = Mockito.mock(DatabaseConnector.class);
     JobRoleDao jobRoleDao = Mockito.mock(JobRoleDao.class);
+    BandDao bandDao =  Mockito.mock(BandDao.class);
 
-    JobRoleService jobRoleService = new JobRoleService(databaseConnector, jobRoleDao);
+    JobRoleService jobRoleService = new JobRoleService(databaseConnector, jobRoleDao, bandDao);
 
     Connection conn;
+
+    JobRoleRequest jobRoleRequest = new JobRoleRequest("Testing", 2, 1, "www.google.com");
+    Band band = new Band(2,"test");
+
     @Test
     void getJobRoles_shouldReturnJobRoles_whenDaoReturnsJobRoles() throws ActionFailedException {
         JobRole jobRole1 = new JobRole(1,"Testing Engineer", "Manager");
@@ -59,9 +68,29 @@ class JobRoleServiceTest {
     }
 
     @Test
-    void createJobRole_shouldReturn200Response_whenJobRoleServiceDoesNotThrowException() throws ActionFailedException {
+    void createJobRole_shouldReturn200Response_whenJobRoleServiceDoesNotThrowException() throws ActionFailedException, DoesNotExistException {
+        int expectedId = 1;
+
 
         Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
-        Mockito.when(jobRoleDao.getJobRoles(conn)).thenReturn(jobRoles);
+        Mockito.when(jobRoleDao.createJobRole(conn, jobRoleRequest)).thenReturn(expectedId);
+        Mockito.when(bandDao.getBandById(conn, jobRoleRequest.getBandId())).thenReturn(band);
+
+        int result = jobRoleService.createJobRole(jobRoleRequest);
+
+        assertEquals(result, expectedId);
+    }
+
+    @Test
+    void createJobRole_shouldReturnActionFailedException_whenDaoReturnsActionFailedException() throws ActionFailedException, DoesNotExistException {
+
+        Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
+
+        Mockito.when(jobRoleDao.createJobRole(conn, jobRoleRequest)).thenThrow(ActionFailedException.class);
+        Mockito.when(bandDao.getBandById(conn, jobRoleRequest.getBandId())).thenReturn(band);
+
+        assertThrows(ActionFailedException.class, () -> {
+            jobRoleService.createJobRole(jobRoleRequest);
+        });
     }
 }

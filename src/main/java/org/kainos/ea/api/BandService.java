@@ -2,6 +2,7 @@ package org.kainos.ea.api;
 
 import org.kainos.ea.cli.Band;
 import org.kainos.ea.client.ActionFailedException;
+import org.kainos.ea.client.DoesNotExistException;
 import org.kainos.ea.db.BandDao;
 import org.kainos.ea.db.DatabaseConnector;
 
@@ -18,5 +19,9 @@ public class BandService {
 
     public List<Band> getBands() throws ActionFailedException {
         return bandDao.getBands(databaseConnector.getConnection());
+    }
+
+    public Band getBandById(int id) throws ActionFailedException, DoesNotExistException {
+        return bandDao.getBandById(databaseConnector.getConnection(), id);
     }
 }

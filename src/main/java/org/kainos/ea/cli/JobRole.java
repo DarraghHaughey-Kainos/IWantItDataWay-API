@@ -2,12 +2,12 @@ package org.kainos.ea.cli;
 
 public class JobRole {
     private String jobRoleTitle;
-    private int id;
+    private int jobRoleId;
     private String capability_name;
 
     public JobRole(int id, String jobRoleTitle, String capability_name) {
         this.jobRoleTitle = jobRoleTitle;
-        this.id = id;
+        this.jobRoleId = id;
         this.capability_name = capability_name;
     }
 
@@ -19,12 +19,12 @@ public class JobRole {
         this.jobRoleTitle = jobRoleTitle;
     }
 
-    public int getId() {
-        return id;
+    public int getJobRoleId() {
+        return jobRoleId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setJobRoleId(int jobRoleId) {
+        this.jobRoleId = jobRoleId;
     }
 
     public String getCapability_name() {

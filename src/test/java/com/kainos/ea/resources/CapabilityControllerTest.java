@@ -32,7 +32,7 @@ public class CapabilityControllerTest {
     }
 
     @Test
-    void capabilityController_shouldReturn200Response_whenCapabilityServiceDoesNotThrowException() throws ActionFailedException {
+    void getAllCapabilities_shouldReturn200Response_whenCapabilityServiceDoesNotThrowException() throws ActionFailedException {
         int expectedStatusCode = 200;
 
         Capability capability1 = new Capability(1,"Innovation");

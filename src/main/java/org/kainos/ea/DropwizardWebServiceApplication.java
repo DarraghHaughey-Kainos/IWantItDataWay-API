@@ -5,11 +5,20 @@ import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.federecio.dropwizard.swagger.SwaggerBundle;
 import io.federecio.dropwizard.swagger.SwaggerBundleConfiguration;
+import org.kainos.ea.api.JobRoleService;
+import org.kainos.ea.db.DatabaseConnector;
+import org.kainos.ea.db.JobRoleDao;
 import org.kainos.ea.resources.BandController;
 import org.kainos.ea.resources.HelloWorldController;
 import org.kainos.ea.resources.JobRoleController;
 
 public class DropwizardWebServiceApplication extends Application<DropwizardWebServiceConfiguration> {
+    private JobRoleService jobRoleService;
+
+    public DropwizardWebServiceApplication() {
+        DatabaseConnector databaseConnector = new DatabaseConnector();
+        jobRoleService = new JobRoleService(databaseConnector, new JobRoleDao());
+    }
 
     public static void main(final String[] args) throws Exception {
         new DropwizardWebServiceApplication().run(args);
@@ -35,7 +44,7 @@ public class DropwizardWebServiceApplication extends Application<DropwizardWebSe
                     final Environment environment) {
         // TODO: implement application
         environment.jersey().register(new HelloWorldController());
-        environment.jersey().register(new JobRoleController());
+        environment.jersey().register(new JobRoleController(jobRoleService));
         environment.jersey().register(new BandController());
     }
 }

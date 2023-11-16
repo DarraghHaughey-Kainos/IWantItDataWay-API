@@ -8,11 +8,17 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.kainos.ea.DropwizardWebServiceApplication;
 import org.kainos.ea.DropwizardWebServiceConfiguration;
+import org.kainos.ea.api.JobRoleService;
 import org.kainos.ea.cli.JobRole;
+import org.kainos.ea.client.ActionFailedException;
+import org.mockito.Mockito;
+
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 @ExtendWith(DropwizardExtensionsSupport.class)
-public class JobRoleControllerTest {
+public class JobRoleIntegrationTest {
 
     static final DropwizardAppExtension<DropwizardWebServiceConfiguration> APP = new DropwizardAppExtension<>(
             DropwizardWebServiceApplication.class, null,

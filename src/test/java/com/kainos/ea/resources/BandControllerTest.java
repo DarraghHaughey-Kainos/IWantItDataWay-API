@@ -22,7 +22,7 @@ public class BandControllerTest {
     BandController bandController = new BandController(bandService);
 
     @Test
-    void bandController_shouldReturn500Response_whenBandRoleServiceThrowsActionFailedException() throws ActionFailedException {
+    void getBands_shouldReturn500Response_whenBandRoleServiceThrowsActionFailedException() throws ActionFailedException {
         int expectedStatusCode = 500;
 
         Mockito.doThrow(ActionFailedException.class).when(bandService).getBands();
@@ -33,7 +33,7 @@ public class BandControllerTest {
     }
 
     @Test
-    void bandController_shouldReturn200Response_whenBandServiceDoesNotThrowException() throws ActionFailedException {
+    void getBands_shouldReturn200Response_whenBandServiceDoesNotThrowException() throws ActionFailedException {
         int expectedStatusCode = 200;
 
         Band band1 = new Band(1,"Manager");

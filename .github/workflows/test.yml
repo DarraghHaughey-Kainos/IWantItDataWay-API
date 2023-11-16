@@ -6,7 +6,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Maven Build
+name: Maven Test
 
 on:
   push:
@@ -25,11 +25,11 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
           cache: maven
-      - name: Build with Maven
+      - name: Test with Maven
         env:
           DB_HOST: ${{ secrets.DB_HOST }}
           DB_NAME: ${{ secrets.DB_NAME }}
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
-        run: mvn -DJWT_SECRET=${JWT_SECRET} -DDB_HOST=${DB_HOST} -DDB_NAME=${DB_NAME} -DDB_USERNAME=${DB_USERNAME} -DDB_PASSWORD=${DB_PASSWORD} -B package --file pom.xml
+        run: mvn -DJWT_SECRET=${JWT_SECRET} -DDB_HOST=${DB_HOST} -DDB_NAME=${DB_NAME} -DDB_USERNAME=${DB_USERNAME} -DDB_PASSWORD=${DB_PASSWORD} clean test

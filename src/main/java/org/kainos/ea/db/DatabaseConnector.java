@@ -1,5 +1,6 @@
 package org.kainos.ea.db;
 
+import org.kainos.ea.client.ActionFailedException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -7,15 +8,15 @@ import java.sql.SQLException;
 public class DatabaseConnector {
     private static Connection conn;
 
-    public static Connection getConnection() throws SQLException {
+    public Connection getConnection() throws ActionFailedException {
         String user;
         String password;
         String host;
         String name;
 
-        if (conn!= null && !conn.isClosed()) { return  conn; }
-
         try {
+            if (conn!= null && !conn.isClosed()) { return  conn; }
+
             user = System.getenv("DB_USERNAME");
             password = System.getenv("DB_PASSWORD");
             host = System.getenv("DB_HOST");
@@ -31,8 +32,7 @@ public class DatabaseConnector {
 
         } catch (SQLException e) {
             System.err.println("DB connection problem");
-            System.err.println(e.getMessage());
+            throw new ActionFailedException("DB Connection Problem");
         }
-        return null;
     }
 }

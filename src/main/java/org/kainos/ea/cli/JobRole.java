@@ -7,14 +7,16 @@ public class JobRole {
     private String sharepointLink;
     private String specificationText;
     private String bandName;
+    private String jobRoleResponsibilities;
 
-    public JobRole(int jobRoleId, String jobRoleTitle, String capabilityName, String sharepointLink, String specificationText, String bandName) {
+    public JobRole(int jobRoleId, String jobRoleTitle, String capabilityName, String sharepointLink, String specificationText, String bandName, String jobRoleResponsibilities) {
         this.jobRoleId = jobRoleId;
         this.jobRoleTitle = jobRoleTitle;
         this.capabilityName = capabilityName;
         this.sharepointLink = sharepointLink;
         this.specificationText = specificationText;
         this.bandName = bandName;
+        this.jobRoleResponsibilities = jobRoleResponsibilities;
     }
 
     public int getJobRoleId() { return jobRoleId; }
@@ -40,4 +42,11 @@ public class JobRole {
     public String getBandName() { return bandName; }
 
     public void setBandName(String bandName) { this.bandName = bandName; }
+
+    public String getJobRoleResponsibilities() {
+        return jobRoleResponsibilities;    }
+
+    public void setJobRoleResponsibilities(String jobRoleResponsibilities) {
+        this.jobRoleResponsibilities = jobRoleResponsibilities;
+    }
 }

@@ -8,18 +8,29 @@ import io.federecio.dropwizard.swagger.SwaggerBundleConfiguration;
 import org.kainos.ea.api.BandService;
 import org.kainos.ea.api.JobRoleService;
 import org.kainos.ea.db.BandDao;
+import org.kainos.ea.api.AuthService;
+import org.kainos.ea.client.ActionFailedException;
+import org.kainos.ea.core.CredentialValidator;
+import org.kainos.ea.db.AuthDao;
 import org.kainos.ea.db.DatabaseConnector;
+import org.kainos.ea.resources.AuthController;
+import org.kainos.ea.resources.HelloWorldController;
 import org.kainos.ea.db.JobRoleDao;
 import org.kainos.ea.resources.BandController;
-import org.kainos.ea.resources.HelloWorldController;
 import org.kainos.ea.resources.JobRoleController;
 
 public class DropwizardWebServiceApplication extends Application<DropwizardWebServiceConfiguration> {
+    private AuthService authService;
     private final JobRoleService jobRoleService;
     private final BandService bandService;
 
     public DropwizardWebServiceApplication() {
         DatabaseConnector databaseConnector = new DatabaseConnector();
+        try {
+            authService = new AuthService(databaseConnector, new AuthDao(), new CredentialValidator());
+        } catch (ActionFailedException e) {
+            System.err.println(e.getMessage());
+        }
         jobRoleService = new JobRoleService(databaseConnector, new JobRoleDao(), new BandDao());
         bandService = new BandService(databaseConnector, new BandDao());
     }
@@ -48,6 +59,7 @@ public class DropwizardWebServiceApplication extends Application<DropwizardWebSe
                     final Environment environment) {
         // TODO: implement application
         environment.jersey().register(new HelloWorldController());
+        environment.jersey().register(new AuthController(authService));
         environment.jersey().register(new JobRoleController(jobRoleService));
         environment.jersey().register(new BandController(bandService));
     }

@@ -9,6 +9,7 @@ import org.kainos.ea.cli.JobRoleRequest;
 import org.kainos.ea.client.ActionFailedException;
 import org.kainos.ea.client.DoesNotExistException;
 import org.kainos.ea.db.BandDao;
+import org.kainos.ea.db.CapabilityDao;
 import org.kainos.ea.db.DatabaseConnector;
 import org.kainos.ea.db.JobRoleDao;
 import org.mockito.Mockito;
@@ -28,8 +29,9 @@ class JobRoleServiceTest {
     DatabaseConnector databaseConnector = Mockito.mock(DatabaseConnector.class);
     JobRoleDao jobRoleDao = Mockito.mock(JobRoleDao.class);
     BandDao bandDao =  Mockito.mock(BandDao.class);
+    CapabilityDao capabilityDao = Mockito.mock(CapabilityDao.class);
 
-    JobRoleService jobRoleService = new JobRoleService(databaseConnector, jobRoleDao, bandDao);
+    JobRoleService jobRoleService = new JobRoleService(databaseConnector, jobRoleDao, bandDao, capabilityDao);
 
     Connection conn;
 

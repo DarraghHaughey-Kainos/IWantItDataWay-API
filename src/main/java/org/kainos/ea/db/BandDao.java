@@ -54,7 +54,7 @@ public class BandDao {
             throw new DoesNotExistException("Band ID does not exist");
         } catch (SQLException e){
             System.err.println(e.getMessage());
-            throw new ActionFailedException("Failed to get Bands");
+            throw new ActionFailedException("Failed to get Band");
         }
     }
 }

@@ -3,14 +3,14 @@ package org.kainos.ea.cli;
 public class JobRole {
     private int jobRoleId;
     private String jobRoleTitle;
-    private String capabilityName;
     private String bandName;
+    private String capabilityName;
 
     public JobRole(int jobRoleId, String jobRoleTitle, String bandName, String capabilityName) {
         this.jobRoleId = jobRoleId;
         this.jobRoleTitle = jobRoleTitle;
-        this.capabilityName = capabilityName;
         this.bandName = bandName;
+        this.capabilityName = capabilityName;
     }
 
     public String getJobRoleTitle() {

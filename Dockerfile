@@ -11,4 +11,6 @@ ARG DB_PASSWORD
 ENV DB_PASSWORD ${DB_PASSWORD}
 ARG DB_NAME
 ENV DB_NAME ${DB_NAME}
+ARG JWT_SECRET
+ENV JWT_SECRET ${JWT_SECRET}
 CMD ["java","-jar", "/code/target/IWantItDataWay-API-1.0-SNAPSHOT.jar", "server", "/code/config.yml"]

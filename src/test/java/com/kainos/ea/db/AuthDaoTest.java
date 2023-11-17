@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class AuthDaoTest {
     DatabaseConnector databaseConnector = new DatabaseConnector();
     AuthDao authDao;
-    Credential login = new Credential("UnitTestAuthDao", "UnitTestAuthDao");
+    Credential login = new Credential("UnitTestAuthDao@test.com", "UnitTestAuthDao");
 
     public AuthDaoTest() throws ActionFailedException {
         authDao = new AuthDao();
@@ -25,7 +25,6 @@ public class AuthDaoTest {
     @Test
     void register_shouldExistInDatabase_whenNewUserRegisters() throws ActionFailedException {
         authDao.registerUser(databaseConnector.getConnection(), login);
-
         boolean loggedInSuccessful = authDao.validateLogin(databaseConnector.getConnection(), login);
 
         authDao.deleteUser(databaseConnector.getConnection(), login);

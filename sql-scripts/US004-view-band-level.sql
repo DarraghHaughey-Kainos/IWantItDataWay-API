@@ -1,12 +1,12 @@
 USE IWantItDataWay_StephenH;
 
 CREATE TABLE `band` (
-	band_id tinyint unsigned AUTO_INCREMENT,
+	band_id tinyint unsigned,
 	band_name VARCHAR(50) NOT NULL,
 	PRIMARY KEY (band_id)
 );
 
-INSERT INTO band (band_name) VALUES ("Apprentice"), ("Trainee"), ("Associate"), ("Senior Associate"), ("Consultant"), ("Manager"), ("Principal"), ("Leadership Community");
+INSERT INTO band (band_id, band_name) VALUES (1,"Apprentice"), (2,"Trainee"), (3,"Associate"), (4,"Senior Associate"), (5,"Consultant"), (6,"Manager"), (7,"Principal"), (8,"Leadership Community");
 
 ALTER TABLE job_role
 ADD band_id tinyint unsigned;

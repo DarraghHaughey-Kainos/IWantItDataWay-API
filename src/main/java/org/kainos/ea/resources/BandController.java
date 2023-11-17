@@ -3,13 +3,13 @@ package org.kainos.ea.resources;
 import io.swagger.annotations.Api;
 import org.eclipse.jetty.http.HttpStatus;
 import org.kainos.ea.api.BandService;
-import org.kainos.ea.api.JobRoleService;
 import org.kainos.ea.client.ActionFailedException;
 import org.kainos.ea.client.DoesNotExistException;
-import org.kainos.ea.db.BandDao;
-import org.kainos.ea.db.DatabaseConnector;
 
-import javax.ws.rs.*;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 

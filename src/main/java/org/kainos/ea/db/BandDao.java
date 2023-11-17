@@ -13,7 +13,7 @@ public class BandDao {
     public List<Band> getBands(Connection c) throws ActionFailedException {
         try (Statement st = c.createStatement()) {
             String queryString = "SELECT band_id, band_name " +
-                    "FROM band ";
+                    "FROM band;";
 
             ResultSet rs = st.executeQuery(queryString);
 

@@ -8,6 +8,9 @@ import io.federecio.dropwizard.swagger.SwaggerBundleConfiguration;
 import org.kainos.ea.api.BandService;
 import org.kainos.ea.api.JobRoleService;
 import org.kainos.ea.db.BandDao;
+import org.kainos.ea.api.CapabilityService;
+import org.kainos.ea.db.CapabilityDao;
+import org.kainos.ea.resources.CapabilityController;
 import org.kainos.ea.api.AuthService;
 import org.kainos.ea.client.ActionFailedException;
 import org.kainos.ea.core.CredentialValidator;
@@ -23,6 +26,7 @@ public class DropwizardWebServiceApplication extends Application<DropwizardWebSe
     private AuthService authService;
     private final JobRoleService jobRoleService;
     private final BandService bandService;
+    private final CapabilityService capabilityService;
 
     public DropwizardWebServiceApplication() {
         DatabaseConnector databaseConnector = new DatabaseConnector();
@@ -33,6 +37,7 @@ public class DropwizardWebServiceApplication extends Application<DropwizardWebSe
         }
         jobRoleService = new JobRoleService(databaseConnector, new JobRoleDao(), new BandDao());
         bandService = new BandService(databaseConnector, new BandDao());
+        capabilityService = new CapabilityService(databaseConnector, new CapabilityDao());
     }
 
     public static void main(final String[] args) throws Exception {
@@ -58,6 +63,7 @@ public class DropwizardWebServiceApplication extends Application<DropwizardWebSe
     public void run(final DropwizardWebServiceConfiguration configuration,
                     final Environment environment) {
         // TODO: implement application
+        environment.jersey().register(new CapabilityController(capabilityService));
         environment.jersey().register(new HelloWorldController());
         environment.jersey().register(new AuthController(authService));
         environment.jersey().register(new JobRoleController(jobRoleService));

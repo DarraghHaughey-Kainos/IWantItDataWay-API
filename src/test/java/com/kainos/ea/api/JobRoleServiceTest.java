@@ -38,9 +38,9 @@ class JobRoleServiceTest {
 
     @Test
     void getJobRoles_shouldReturnJobRoles_whenDaoReturnsJobRoles() throws ActionFailedException {
-        JobRole jobRole1 = new JobRole(1,"Testing Engineer", "Manager");
-        JobRole jobRole2 = new JobRole(2,"Testing2 Engineer", "Manager");
-        JobRole jobRole3 = new JobRole(3,"Testing3 Engineer", "Manager");
+        JobRole jobRole1 = new JobRole(1,"Testing Engineer", "Manager", "Engineering");
+        JobRole jobRole2 = new JobRole(2,"Testing2 Engineer", "Manager", "Engineering");
+        JobRole jobRole3 = new JobRole(3,"Testing3 Engineer", "Manager", "Engineering");
 
         List<JobRole> jobRoles = new ArrayList<>();
         jobRoles.add(jobRole1);

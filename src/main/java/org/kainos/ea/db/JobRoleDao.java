@@ -4,7 +4,11 @@ import org.kainos.ea.cli.JobRole;
 import org.kainos.ea.cli.JobRoleRequest;
 import org.kainos.ea.client.ActionFailedException;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,9 +16,10 @@ public class JobRoleDao {
 
     public List<JobRole> getJobRoles(Connection c) throws ActionFailedException {
         try (Statement st = c.createStatement()) {
-            String queryString = "SELECT job_role_id, job_role_title, band_name " +
+            String queryString = "SELECT job_role_id, job_role_title, band_name, capability_name " +
                     "FROM job_role " +
-                    "LEFT JOIN band USING(band_id);";
+                    "LEFT JOIN band USING(band_id) " +
+                    "LEFT JOIN capability USING(capability_id);";
 
             ResultSet rs = st.executeQuery(queryString);
 
@@ -24,7 +29,8 @@ public class JobRoleDao {
                 JobRole jobRole = new JobRole(
                         rs.getInt("job_role_id"),
                         rs.getString("job_role_title"),
-                        rs.getString("band_name")
+                        rs.getString("band_name"),
+                        rs.getString("capability_name")
                 );
 
                 jobRoleList.add(jobRole);

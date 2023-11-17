@@ -68,6 +68,17 @@ public class JobRoleControllerTest {
     }
 
     @Test
+    void createJobRole_shouldReturn404Response_whenJobRoleServiceThrowsDoesNotExistException() throws ActionFailedException, DoesNotExistException {
+        int expectedStatusCode = 404;
+
+        Mockito.doThrow(DoesNotExistException.class).when(jobRoleService).createJobRole(jobRoleRequest);
+
+        Response response = jobRoleController.createJobRole(jobRoleRequest);
+
+        assertEquals(response.getStatus(), expectedStatusCode);
+    }
+
+    @Test
     void createJobRole_shouldReturn500Response_whenJobRoleServiceThrowsActionFailedException() throws ActionFailedException, DoesNotExistException {
         int expectedStatusCode = 500;
 

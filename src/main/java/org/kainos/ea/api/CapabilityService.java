@@ -2,6 +2,7 @@ package org.kainos.ea.api;
 
 import org.kainos.ea.cli.Capability;
 import org.kainos.ea.client.ActionFailedException;
+import org.kainos.ea.client.DoesNotExistException;
 import org.kainos.ea.db.CapabilityDao;
 import org.kainos.ea.db.DatabaseConnector;
 
@@ -21,4 +22,7 @@ public class CapabilityService {
         return capabilityDao.getAllCapabilities(databaseConnector.getConnection());
     }
 
+    public Capability getCapabilityById(int id) throws ActionFailedException, DoesNotExistException {
+        return capabilityDao.getCapabilityById(databaseConnector.getConnection(), id);
+    }
 }

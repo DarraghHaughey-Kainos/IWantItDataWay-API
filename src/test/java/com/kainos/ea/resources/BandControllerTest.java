@@ -5,6 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.kainos.ea.api.BandService;
 import org.kainos.ea.cli.Band;
 import org.kainos.ea.client.ActionFailedException;
+import org.kainos.ea.client.DoesNotExistException;
 import org.kainos.ea.resources.BandController;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -51,5 +52,44 @@ public class BandControllerTest {
 
         assertEquals(response.getStatus(), expectedStatusCode);
         assertEquals(response.getEntity(), bands);
+    }
+
+    @Test
+    void getBandById_shouldReturn200Response_whenBandServiceDoesNotThrowException() throws ActionFailedException, DoesNotExistException {
+        int id = 1;
+        int expectedStatusCode = 200;
+
+        Band band = new Band(1,"Manager");
+
+        Mockito.when(bandService.getBandById(id)).thenReturn(band);
+
+        Response response = bandController.getBandById(id);
+
+        assertEquals(response.getStatus(), expectedStatusCode);
+        assertEquals(response.getEntity(), band);
+    }
+
+    @Test
+    void getBandById_shouldReturn404Response_whenBandServiceThrowsDoesNotExistException() throws ActionFailedException, DoesNotExistException {
+        int id = 1;
+        int expectedStatusCode = 404;
+
+        Mockito.doThrow(DoesNotExistException.class).when(bandService).getBandById(id);
+
+        Response response = bandController.getBandById(id);
+
+        assertEquals(response.getStatus(), expectedStatusCode);
+    }
+
+    @Test
+    void getBandById_shouldReturn500Response_whenBandServiceThrowsDoesNotExistException() throws ActionFailedException, DoesNotExistException {
+        int id = 1;
+        int expectedStatusCode = 500;
+
+        Mockito.doThrow(ActionFailedException.class).when(bandService).getBandById(id);
+
+        Response response = bandController.getBandById(id);
+
+        assertEquals(response.getStatus(), expectedStatusCode);
     }
 }

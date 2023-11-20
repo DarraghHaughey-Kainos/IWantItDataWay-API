@@ -2,7 +2,7 @@ package org.kainos.ea.resources;
 
 import io.swagger.annotations.Api;
 import org.eclipse.jetty.http.HttpStatus;
-import org.kainos.ea.api.JobRoleService;
+import org.kainos.ea.api.CapabilityService;
 import org.kainos.ea.client.ActionFailedException;
 
 import javax.ws.rs.GET;
@@ -13,23 +13,23 @@ import javax.ws.rs.core.Response;
 
 @Api("I Want It Data Way API")
 @Path("/api")
-public class JobRoleController {
+public class CapabilityController {
 
-    private final JobRoleService jobRoleService;
+    private final CapabilityService capabilityService;
 
-    public JobRoleController(JobRoleService jobRoleService) {
-        this.jobRoleService = jobRoleService;
+    public CapabilityController(CapabilityService capabilityService) {
+        this.capabilityService = capabilityService;
     }
 
     @GET
-    @Path("/job-roles")
+    @Path("/capabilities")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getJobRoles(){
+    public Response getAllCapabilities() {
         try {
             return Response
-                        .status(Response.Status.OK)
-                        .entity(jobRoleService.getJobRoles())
-                        .build();
+                    .status(Response.Status.OK)
+                    .entity(capabilityService.getAllCapabilities())
+                    .build();
         } catch (ActionFailedException e) {
             System.out.println(e.getMessage());
             return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();

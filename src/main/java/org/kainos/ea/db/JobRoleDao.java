@@ -42,7 +42,6 @@ public class JobRoleDao {
             System.err.println(e.getMessage());
             throw new ActionFailedException("Failed to get Job Roles");
         }
-
     }
 
     public List<JobRole> getJobRoleById(Connection c, int id) throws ActionFailedException, JobRoleDoesNotExistException {

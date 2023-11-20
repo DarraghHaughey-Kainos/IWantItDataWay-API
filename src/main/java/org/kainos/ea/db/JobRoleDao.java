@@ -40,13 +40,13 @@ public class JobRoleDao {
 
     public List<JobRoleSpecification> getJobRole(Connection c, int id) throws ActionFailedException {
 
-        String jobRoleQuery = "SELECT job_role_id, job_role_title, job_role_sharepoint_link\n" +
-                "FROM job_role\n" +
+        String jobRoleQuery = "SELECT job_role_id, job_role_title, job_role_sharepoint_link " +
+                "FROM job_role " +
                 "WHERE job_role_id = ?;";
 
-        String jobSpecQuery = "SELECT specification_text\n" +
-                "FROM job_role_specification jrs\n" +
-                "LEFT JOIN specification s USING (specification_id)\n" +
+        String jobSpecQuery = "SELECT specification_text " +
+                "FROM job_role_specification " +
+                "LEFT JOIN specification s USING (specification_id) " +
                 "WHERE job_role_id = ?;";
 
         try (PreparedStatement jobRoleStatement = c.prepareStatement(jobRoleQuery);

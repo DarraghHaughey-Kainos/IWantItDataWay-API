@@ -11,7 +11,6 @@ import org.kainos.ea.db.JobRoleDao;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +40,7 @@ class JobRoleServiceTest {
         Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
         Mockito.when(jobRoleDao.getJobRoles(conn)).thenReturn(jobRoles);
 
-        List<JobRole> result = jobRoleDao.getJobRoles(conn);
+        List<JobRole> result = jobRoleService.getJobRoles();
 
         assertEquals(result, jobRoles);
     }

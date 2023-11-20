@@ -8,6 +8,7 @@ import org.kainos.ea.db.DatabaseConnector;
 import org.kainos.ea.db.JobRoleDao;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -31,6 +32,21 @@ public class JobRoleController {
                         .status(Response.Status.OK)
                         .entity(jobRoleService.getJobRoles())
                         .build();
+        } catch (ActionFailedException e) {
+            System.out.println(e.getMessage());
+            return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
+        }
+    }
+
+    @GET
+    @Path("/job-role/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getJobRole(@PathParam("id") int id) {
+        try {
+            return Response
+                    .status(Response.Status.OK)
+                    .entity(jobRoleService.getJobRole(id))
+                    .build();
         } catch (ActionFailedException e) {
             System.out.println(e.getMessage());
             return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();

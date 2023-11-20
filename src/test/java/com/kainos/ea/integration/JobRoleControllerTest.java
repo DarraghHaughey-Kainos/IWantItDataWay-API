@@ -9,6 +9,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.kainos.ea.DropwizardWebServiceApplication;
 import org.kainos.ea.DropwizardWebServiceConfiguration;
 import org.kainos.ea.cli.JobRole;
+import org.kainos.ea.cli.JobRoleSpecification;
+
 import java.util.List;
 
 @ExtendWith(DropwizardExtensionsSupport.class)
@@ -22,6 +24,15 @@ public class JobRoleControllerTest {
     @Test
     void getJobRoles_shouldReturnListOfJobRoles() {
         List<JobRole> response = APP.client().target("http://localhost:8080/api/job-roles")
+                .request()
+                .get(List.class);
+
+        Assertions.assertTrue(response.size() > 0);
+    }
+
+    @Test
+    void getJobRole_shouldReturnListOfJobRole() {
+        List<JobRoleSpecification> response = APP.client().target("http://localhost:8080/api/job-role/2")
                 .request()
                 .get(List.class);
 

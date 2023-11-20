@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.kainos.ea.api.JobRoleService;
 import org.kainos.ea.cli.JobRole;
+import org.kainos.ea.cli.JobRoleSpecification;
 import org.kainos.ea.client.ActionFailedException;
 import org.kainos.ea.db.DatabaseConnector;
 import org.kainos.ea.db.JobRoleDao;
@@ -54,6 +55,39 @@ class JobRoleServiceTest {
 
         assertThrows(ActionFailedException.class, () -> {
             jobRoleService.getJobRoles();
+        });
+    }
+
+    @Test
+    void getJobRole_shouldReturnJobRole_whenDaoReturnsJobRole() throws ActionFailedException {
+        List<String> specs = new ArrayList<>();
+        specs.add("spec 1");
+        specs.add("spec 2");
+        specs.add("spec 3");
+
+        JobRoleSpecification jobRoleSpecification1 = new JobRoleSpecification(1, "Testing Engineer 1", "www.link.com", specs);
+
+        List<JobRoleSpecification> jobRoleSpecifications = new ArrayList<>();
+        jobRoleSpecifications.add(jobRoleSpecification1);
+
+        Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
+
+        Mockito.when(jobRoleDao.getJobRole(conn, 1)).thenReturn(jobRoleSpecifications);
+
+        List<JobRoleSpecification> result = jobRoleDao.getJobRole(conn, 1);
+
+        assertEquals(result, jobRoleSpecifications);
+    }
+
+    @Test
+    void getJobRole_shouldReturnSQLException_whenDaoReturnsSQLException() throws ActionFailedException {
+
+        Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
+
+        Mockito.when(jobRoleDao.getJobRole(conn, 1)).thenThrow(ActionFailedException.class);
+
+        assertThrows(ActionFailedException.class, () -> {
+           jobRoleService.getJobRole(1);
         });
     }
 }

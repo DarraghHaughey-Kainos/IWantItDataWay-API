@@ -32,10 +32,10 @@ public class CapabilityIntegrationTest {
 
     @BeforeEach
     public void init() {
-        String fakeSecret = System.getenv("JWT_SECRET");
+        String JWTSecret = System.getenv("JWT_SECRET");
         String expectedUsername = "ExpectedUsername";
 
-        Key hmacKey = new SecretKeySpec(Base64.getDecoder().decode(fakeSecret),
+        Key hmacKey = new SecretKeySpec(Base64.getDecoder().decode(JWTSecret),
                 SignatureAlgorithm.HS256.getJcaName());
 
         validToken = Jwts.builder()

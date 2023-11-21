@@ -39,10 +39,10 @@ public class JobRoleIntegrationTest {
     @Test
     void getJobRoles_shouldReturn200_whenValidRoleIsPassedIn () {
 
-        String fakeSecret = System.getenv("JWT_SECRET");
+        String JWTSecret = System.getenv("JWT_SECRET");
         String expectedUsername = "ExpectedUsername";
 
-        Key hmacKey = new SecretKeySpec(Base64.getDecoder().decode(fakeSecret),
+        Key hmacKey = new SecretKeySpec(Base64.getDecoder().decode(JWTSecret),
                 SignatureAlgorithm.HS256.getJcaName());
 
         String token = Jwts.builder()
@@ -63,10 +63,10 @@ public class JobRoleIntegrationTest {
     @Test
     void getJobRoles_shouldReturn401_whenInvalidRoleIsPassedIn () {
 
-        String fakeSecret = System.getenv("JWT_SECRET");
+        String JWTSecret = System.getenv("JWT_SECRET");
         String expectedUsername = "ExpectedUsername";
 
-        Key hmacKey = new SecretKeySpec(Base64.getDecoder().decode(fakeSecret),
+        Key hmacKey = new SecretKeySpec(Base64.getDecoder().decode(JWTSecret),
                 SignatureAlgorithm.HS256.getJcaName());
 
         String token = Jwts.builder()

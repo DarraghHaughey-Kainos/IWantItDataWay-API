@@ -19,7 +19,7 @@ import javax.ws.rs.core.Response;
 public class CapabilityController {
 
     private final CapabilityService capabilityService;
-    private AuthService authService;
+    private final AuthService authService;
 
     public CapabilityController(CapabilityService capabilityService, AuthService authService) {
         this.capabilityService = capabilityService;

@@ -51,7 +51,6 @@ public class AuthService {
         }
 
         Claims decodedJWT = authDao.parseToken(token);
-        System.out.println(decodedJWT);
         String tokenPermission = decodedJWT.get("role").toString();
 
         if (Objects.equals(requiredPermission, "View")) {

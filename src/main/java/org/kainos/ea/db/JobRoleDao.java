@@ -14,10 +14,13 @@ public class JobRoleDao {
 
     public List<JobRole> getJobRoles(Connection c) throws ActionFailedException {
         try (Statement st = c.createStatement()) {
-            ResultSet rs = st.executeQuery("SELECT job_role_id, job_role_title, capability_name "
-                    + "FROM job_role "
+            String queryString = "SELECT job_role_id, job_role_title, capability_name, band_name " +
+                    "FROM job_role "
                     + "LEFT JOIN capability "
-                    + "USING(capability_id);");
+                    + "USING(capability_id)"
+                    + "LEFT JOIN band USING(band_id);";
+
+            ResultSet rs = st.executeQuery(queryString);
 
             List<JobRole> jobRoleList = new ArrayList<>();
 
@@ -25,8 +28,9 @@ public class JobRoleDao {
                 JobRole jobRole = new JobRole(
                         rs.getInt("job_role_id"),
                         rs.getString("job_role_title"),
-                        rs.getString("capability_name")
-                );
+                        rs.getString("capability_name"),
+                        rs.getString("band_name")
+                        );
 
                 jobRoleList.add(jobRole);
             }

@@ -1,11 +1,14 @@
 package org.kainos.ea.db;
 
-import org.kainos.ea.cli.Band;
 import org.kainos.ea.cli.Capability;
 import org.kainos.ea.client.ActionFailedException;
 import org.kainos.ea.client.DoesNotExistException;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.ResultSet;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
 

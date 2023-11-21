@@ -55,9 +55,9 @@ public class JobRoleControllerTest {
     }
 
     @Test
-    void createJobRole_shouldReturn200Response_whenJobRoleServiceDoesNotThrowException() throws ActionFailedException, DoesNotExistException {
+    void createJobRole_shouldReturn201Response_whenJobRoleServiceDoesNotThrowException() throws ActionFailedException, DoesNotExistException {
         int expectedId = 1;
-        int expectedStatusCode = 200;
+        int expectedStatusCode = 201;
 
         Mockito.when(jobRoleService.createJobRole(jobRoleRequest)).thenReturn(expectedId);
 

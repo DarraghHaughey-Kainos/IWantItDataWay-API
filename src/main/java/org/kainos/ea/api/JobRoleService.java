@@ -18,4 +18,5 @@ public class JobRoleService {
     public List<JobRole> getJobRoles() throws ActionFailedException {
         return jobRoleDao.getJobRoles(databaseConnector.getConnection());
     }
+
 }

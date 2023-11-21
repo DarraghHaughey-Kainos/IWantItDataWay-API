@@ -2,7 +2,7 @@ package com.kainos.ea.resources;
 
 import org.junit.jupiter.api.Test;
 import org.kainos.ea.api.JobRoleService;
-import org.kainos.ea.cli.JobRole;
+import org.kainos.ea.cli.JobRoles;
 import org.kainos.ea.client.ActionFailedException;
 import org.kainos.ea.resources.JobRoleController;
 import org.mockito.Mockito;
@@ -14,7 +14,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class JobRoleControllerTest {
+public class JobRolesControllerTest {
     JobRoleService jobRoleService = Mockito.mock(JobRoleService.class);
     JobRoleController jobRoleController = new JobRoleController(jobRoleService);
 
@@ -33,14 +33,14 @@ public class JobRoleControllerTest {
     void jobRoleController_shouldReturn200Response_whenJobRoleServiceDoesNotThrowException() throws ActionFailedException {
         int expectedStatusCode = 200;
 
-        JobRole jobRole1 = new JobRole(1,"Testing Engineer");
-        JobRole jobRole2 = new JobRole(2,"Testing2 Engineer");
-        JobRole jobRole3 = new JobRole(3,"Testing3 Engineer");
+        JobRoles jobRoles1 = new JobRoles(1,"Testing Engineer", "Engineering");
+        JobRoles jobRoles2 = new JobRoles(2,"Testing2 Engineer", "Engineering");
+        JobRoles jobRoles3 = new JobRoles(3,"Testing3 Engineer", "Engineering");
 
-        List<JobRole> jobRoles = new ArrayList<>();
-        jobRoles.add(jobRole1);
-        jobRoles.add(jobRole2);
-        jobRoles.add(jobRole3);
+        List<JobRoles> jobRoles = new ArrayList<>();
+        jobRoles.add(jobRoles1);
+        jobRoles.add(jobRoles2);
+        jobRoles.add(jobRoles3);
 
         Mockito.when(jobRoleService.getJobRoles()).thenReturn(jobRoles);
 

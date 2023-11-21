@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import org.eclipse.jetty.http.HttpStatus;
 import org.kainos.ea.api.JobRoleService;
 import org.kainos.ea.client.ActionFailedException;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -37,18 +38,19 @@ public class JobRoleController {
     }
 
     @GET
-    @Path("/job-role/{id}")
+    @Path("/job-roles/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getJobRole(@PathParam("id") int id) {
+    public Response getJobRoleById(@PathParam("id") int id) {
         try {
             return Response
                     .status(Response.Status.OK)
-                    .entity(jobRoleService.getJobRole(id))
+                    .entity(jobRoleService.getJobRoleById(id))
                     .build();
         } catch (ActionFailedException e) {
             System.out.println(e.getMessage());
             return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
         }
     }
+
 
 }

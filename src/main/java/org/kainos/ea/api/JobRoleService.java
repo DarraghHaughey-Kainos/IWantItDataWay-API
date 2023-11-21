@@ -1,7 +1,7 @@
 package org.kainos.ea.api;
 
 import org.kainos.ea.cli.JobRole;
-import org.kainos.ea.cli.JobRoleSpecification;
+import org.kainos.ea.cli.JobRoles;
 import org.kainos.ea.client.ActionFailedException;
 import org.kainos.ea.db.DatabaseConnector;
 import org.kainos.ea.db.JobRoleDao;
@@ -16,11 +16,12 @@ public class JobRoleService {
         this.jobRoleDao = jobRoleDao;
     }
 
-    public List<JobRole> getJobRoles() throws ActionFailedException {
+    public List<JobRoles> getJobRoles() throws ActionFailedException {
         return jobRoleDao.getJobRoles(databaseConnector.getConnection());
     }
 
-    public List<JobRoleSpecification> getJobRole(int id) throws ActionFailedException {
-        return jobRoleDao.getJobRole(databaseConnector.getConnection(), id);
+    public List<JobRole> getJobRoleById(int id) throws ActionFailedException {
+        return jobRoleDao.getJobRoleById(databaseConnector.getConnection(), id);
     }
+
 }

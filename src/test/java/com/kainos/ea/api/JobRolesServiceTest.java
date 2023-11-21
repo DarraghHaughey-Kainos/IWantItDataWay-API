@@ -4,7 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.kainos.ea.api.JobRoleService;
 import org.kainos.ea.cli.JobRole;
-import org.kainos.ea.cli.JobRoleSpecification;
+import org.kainos.ea.cli.JobRoles;
+import org.kainos.ea.cli.Specification;
 import org.kainos.ea.client.ActionFailedException;
 import org.kainos.ea.db.DatabaseConnector;
 import org.kainos.ea.db.JobRoleDao;
@@ -19,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 @ExtendWith(MockitoExtension.class)
-class JobRoleServiceTest {
+class JobRolesServiceTest {
     DatabaseConnector databaseConnector = Mockito.mock(DatabaseConnector.class);
     JobRoleDao jobRoleDao = Mockito.mock(JobRoleDao.class);
 
@@ -28,19 +29,19 @@ class JobRoleServiceTest {
     Connection conn;
     @Test
     void getJobRoles_shouldReturnJobRoles_whenDaoReturnsJobRoles() throws ActionFailedException {
-        JobRole jobRole1 = new JobRole(1,"Testing Engineer");
-        JobRole jobRole2 = new JobRole(2,"Testing2 Engineer");
-        JobRole jobRole3 = new JobRole(3,"Testing3 Engineer");
+        JobRoles jobRoles1 = new JobRoles(1,"Testing Engineer", "Engineering");
+        JobRoles jobRoles2 = new JobRoles(2,"Testing2 Engineer", "Engineering");
+        JobRoles jobRoles3 = new JobRoles(3,"Testing3 Engineer", "Engineering");
 
-        List<JobRole> jobRoles = new ArrayList<>();
-        jobRoles.add(jobRole1);
-        jobRoles.add(jobRole2);
-        jobRoles.add(jobRole3);
+        List<JobRoles> jobRoles = new ArrayList<>();
+        jobRoles.add(jobRoles1);
+        jobRoles.add(jobRoles2);
+        jobRoles.add(jobRoles3);
 
         Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
         Mockito.when(jobRoleDao.getJobRoles(conn)).thenReturn(jobRoles);
 
-        List<JobRole> result = jobRoleService.getJobRoles();
+        List<JobRoles> result = jobRoleService.getJobRoles();
 
         assertEquals(result, jobRoles);
     }
@@ -58,24 +59,20 @@ class JobRoleServiceTest {
     }
 
     @Test
-    void getJobRole_shouldReturnJobRole_whenDaoReturnsJobRole() throws ActionFailedException {
-        List<String> specs = new ArrayList<>();
-        specs.add("spec 1");
-        specs.add("spec 2");
-        specs.add("spec 3");
+    void getJobRoleById_shouldReturnJobRole_whenDaoReturnsJobRole() throws ActionFailedException {
 
-        JobRoleSpecification jobRoleSpecification1 = new JobRoleSpecification(1, "Testing Engineer 1", "www.link.com", specs);
+        JobRole jobRole = new JobRole(1, "Job Role Title", "Capability Name", "www.link.com", "Specification 1, Specification 2, Specification 3");
 
-        List<JobRoleSpecification> jobRoleSpecifications = new ArrayList<>();
-        jobRoleSpecifications.add(jobRoleSpecification1);
+        List<JobRole> jobRoles = new ArrayList<>();
+        jobRoles.add(jobRole);
 
         Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
 
-        Mockito.when(jobRoleDao.getJobRole(conn, 1)).thenReturn(jobRoleSpecifications);
+        Mockito.when(jobRoleDao.getJobRoleById(conn, 1)).thenReturn(jobRoles);
 
-        List<JobRoleSpecification> result = jobRoleDao.getJobRole(conn, 1);
+        List<JobRole> result = jobRoleDao.getJobRoleById(conn, 1);
 
-        assertEquals(result, jobRoleSpecifications);
+        assertEquals(result, jobRoles);
     }
 
     @Test
@@ -83,10 +80,10 @@ class JobRoleServiceTest {
 
         Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
 
-        Mockito.when(jobRoleDao.getJobRole(conn, 1)).thenThrow(ActionFailedException.class);
+        Mockito.when(jobRoleDao.getJobRoleById(conn, 1)).thenThrow(ActionFailedException.class);
 
         assertThrows(ActionFailedException.class, () -> {
-           jobRoleService.getJobRole(1);
+           jobRoleService.getJobRoleById(1);
         });
     }
 }

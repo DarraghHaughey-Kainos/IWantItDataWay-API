@@ -4,11 +4,13 @@ public class JobRoles {
     private String jobRoleTitle;
     private int jobRoleId;
     private String capabilityName;
+    private String bandName;
 
-    public JobRoles(int id, String jobRoleTitle, String capabilityName) {
+    public JobRoles(int id, String jobRoleTitle, String capabilityName, String bandName) {
         this.jobRoleTitle = jobRoleTitle;
         this.jobRoleId = id;
-        this.capabilityName = capabilityName;
+        this.capabilityName= capabilityName;
+        this.bandName = bandName;
     }
 
     public String getJobRoleTitle() {
@@ -34,4 +36,8 @@ public class JobRoles {
     public void setCapabilityName(String capabilityName) {
         this.capabilityName = capabilityName;
     }
+
+    public String getBandName() { return bandName; }
+
+    public void setBandName(String bandName) { this.bandName = bandName; }
 }

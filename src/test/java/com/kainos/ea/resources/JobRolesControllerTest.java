@@ -33,9 +33,9 @@ public class JobRolesControllerTest {
     void jobRoleController_shouldReturn200Response_whenJobRoleServiceDoesNotThrowException() throws ActionFailedException {
         int expectedStatusCode = 200;
 
-        JobRoles jobRoles1 = new JobRoles(1,"Testing Engineer", "Engineering");
-        JobRoles jobRoles2 = new JobRoles(2,"Testing2 Engineer", "Engineering");
-        JobRoles jobRoles3 = new JobRoles(3,"Testing3 Engineer", "Engineering");
+        JobRoles jobRoles1 = new JobRoles(1,"Testing Engineer", "Engineering", "Manager");
+        JobRoles jobRoles2 = new JobRoles(2,"Testing2 Engineer", "Engineering", "Manager");
+        JobRoles jobRoles3 = new JobRoles(3,"Testing3 Engineer", "Engineering", "Manager");
 
         List<JobRoles> jobRoles = new ArrayList<>();
         jobRoles.add(jobRoles1);

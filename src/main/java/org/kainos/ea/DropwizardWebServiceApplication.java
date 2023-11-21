@@ -5,17 +5,26 @@ import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.federecio.dropwizard.swagger.SwaggerBundle;
 import io.federecio.dropwizard.swagger.SwaggerBundleConfiguration;
-import org.kainos.ea.api.*;
-import org.kainos.ea.db.*;
+import org.kainos.ea.api.CapabilityService;
+import org.kainos.ea.db.CapabilityDao;
 import org.kainos.ea.resources.*;
+import org.kainos.ea.api.JobRoleService;
+import org.kainos.ea.api.AuthService;
 import org.kainos.ea.client.ActionFailedException;
 import org.kainos.ea.core.CredentialValidator;
-import org.kainos.ea.api.JobRoleService;
+import org.kainos.ea.api.SpecificationService;
+import org.kainos.ea.db.SpecificationDao;
+import org.kainos.ea.db.AuthDao;
+import org.kainos.ea.api.BandService;
+import org.kainos.ea.db.BandDao;
+import org.kainos.ea.db.DatabaseConnector;
+import org.kainos.ea.db.JobRoleDao;
 
 public class DropwizardWebServiceApplication extends Application<DropwizardWebServiceConfiguration> {
     private AuthService authService;
     private JobRoleService jobRoleService;
     private CapabilityService capabilityService;
+    private BandService bandService;
     private SpecificationService specificationService;
 
     public DropwizardWebServiceApplication() {
@@ -28,6 +37,8 @@ public class DropwizardWebServiceApplication extends Application<DropwizardWebSe
         } catch (ActionFailedException e) {
             System.err.println(e.getMessage());
         }
+        jobRoleService = new JobRoleService(databaseConnector, new JobRoleDao());
+        bandService = new BandService(databaseConnector, new BandDao());
     }
 
     public static void main(final String[] args) throws Exception {
@@ -58,5 +69,6 @@ public class DropwizardWebServiceApplication extends Application<DropwizardWebSe
         environment.jersey().register(new AuthController(authService));
         environment.jersey().register(new JobRoleController(jobRoleService));
         environment.jersey().register(new SpecificationController(specificationService));
+        environment.jersey().register(new BandController(bandService));
     }
 }

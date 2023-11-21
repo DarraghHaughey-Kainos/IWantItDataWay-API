@@ -1,20 +1,20 @@
 package org.kainos.ea.cli;
 
-import java.util.List;
-
 public class JobRole {
     private int jobRoleId;
     private String jobRoleTitle;
     private String capabilityName;
     private String sharepointLink;
     private String specificationText;
+    private String bandName;
 
-    public JobRole(int jobRoleId, String jobRoleTitle, String capabilityName, String sharepointLink, String specificationText) {
+    public JobRole(int jobRoleId, String jobRoleTitle, String capabilityName, String sharepointLink, String specificationText, String bandName) {
         this.jobRoleId = jobRoleId;
         this.jobRoleTitle = jobRoleTitle;
         this.capabilityName = capabilityName;
         this.sharepointLink = sharepointLink;
         this.specificationText = specificationText;
+        this.bandName = bandName;
     }
 
     public int getJobRoleId() { return jobRoleId; }
@@ -36,4 +36,8 @@ public class JobRole {
     public String getSpecificationText() { return specificationText; }
 
     public void setSpecificationText(String specificationText) { this.specificationText = specificationText; }
+
+    public String getBandName() { return bandName; }
+
+    public void setBandName(String bandName) { this.bandName = bandName; }
 }

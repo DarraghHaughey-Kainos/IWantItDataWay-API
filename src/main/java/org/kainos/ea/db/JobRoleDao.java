@@ -17,10 +17,13 @@ public class JobRoleDao {
 
     public List<JobRoles> getJobRoles(Connection c) throws ActionFailedException {
         try (Statement st = c.createStatement()) {
-            ResultSet rs = st.executeQuery("SELECT job_role_id, job_role_title, capability_name "
-                    + "FROM job_role "
+            String queryString = "SELECT job_role_id, job_role_title, capability_name, band_name " +
+                    "FROM job_role "
                     + "LEFT JOIN capability "
-                    + "USING(capability_id);");
+                    + "USING(capability_id)"
+                    + "LEFT JOIN band USING(band_id);";
+
+            ResultSet rs = st.executeQuery(queryString);
 
             List<JobRoles> jobRolesList = new ArrayList<>();
 
@@ -28,8 +31,9 @@ public class JobRoleDao {
                 JobRoles jobRoles = new JobRoles(
                         rs.getInt("job_role_id"),
                         rs.getString("job_role_title"),
-                        rs.getString("capability_name")
-                );
+                        rs.getString("capability_name"),
+                        rs.getString("band_name")
+                        );
 
                 jobRolesList.add(jobRoles);
             }
@@ -44,10 +48,11 @@ public class JobRoleDao {
 
     public List<JobRole> getJobRoleById(Connection c, int id) throws ActionFailedException {
 
-        String query = "SELECT job_role.job_role_id, job_role.job_role_title, job_role.job_role_sharepoint_link, capability.capability_name, " +
+        String query = "SELECT job_role.job_role_id, job_role.job_role_title, job_role.job_role_sharepoint_link, capability.capability_name, band.band_name, " +
                 "GROUP_CONCAT(specification.specification_text SEPARATOR ', ') AS job_role_specs " +
                 "FROM job_role " +
                 "LEFT JOIN capability ON job_role.capability_id = capability.capability_id " +
+                "LEFT JOIN band ON job_role.band_id = band.band_id " +
                 "LEFT JOIN job_role_specification ON job_role.job_role_id = job_role_specification.job_role_id " +
                 "LEFT JOIN specification ON job_role_specification.specification_id = specification.specification_id " +
                 "WHERE job_role.job_role_id = ?;";
@@ -66,10 +71,10 @@ public class JobRoleDao {
                 JobRole jobRole = new JobRole(
                         jobRoleResults.getInt("job_role_id"),
                         jobRoleResults.getString("job_role_title"),
-                        jobRoleResults.getString("job_role_sharepoint_link"),
                         jobRoleResults.getString("capability_name"),
-                        jobRoleResults.getString("job_role_specs")
-
+                        jobRoleResults.getString("job_role_sharepoint_link"),
+                        jobRoleResults.getString("job_role_specs"),
+                        jobRoleResults.getString("band_name")
                 );
 
                 jobRoleList.add(jobRole);

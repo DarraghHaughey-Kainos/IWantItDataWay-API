@@ -7,7 +7,6 @@ import io.federecio.dropwizard.swagger.SwaggerBundle;
 import io.federecio.dropwizard.swagger.SwaggerBundleConfiguration;
 import org.kainos.ea.api.CapabilityService;
 import org.kainos.ea.db.CapabilityDao;
-import org.kainos.ea.resources.*;
 import org.kainos.ea.api.JobRoleService;
 import org.kainos.ea.api.AuthService;
 import org.kainos.ea.client.ActionFailedException;
@@ -19,6 +18,12 @@ import org.kainos.ea.api.BandService;
 import org.kainos.ea.db.BandDao;
 import org.kainos.ea.db.DatabaseConnector;
 import org.kainos.ea.db.JobRoleDao;
+import org.kainos.ea.resources.AuthController;
+import org.kainos.ea.resources.CapabilityController;
+import org.kainos.ea.resources.HelloWorldController;
+import org.kainos.ea.resources.JobRoleController;
+import org.kainos.ea.resources.SpecificationController;
+import org.kainos.ea.resources.BandController;
 
 public class DropwizardWebServiceApplication extends Application<DropwizardWebServiceConfiguration> {
     private AuthService authService;

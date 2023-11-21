@@ -1,6 +1,5 @@
 package org.kainos.ea.cli;
 
-import java.util.List;
 
 public class Specification {
 

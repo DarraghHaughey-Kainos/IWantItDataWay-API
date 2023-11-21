@@ -34,7 +34,7 @@ public class JobRolesIntegrationTest {
 
     @Test
     void getJobRole_shouldReturnListOfJobRole() {
-        List<Specification> response = APP.client().target("http://localhost:8080/api/job-role/2")
+        List<Specification> response = APP.client().target("http://localhost:8080/api/job-roles/2")
                 .request()
                 .get(List.class);
 

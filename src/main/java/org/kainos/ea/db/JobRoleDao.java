@@ -2,7 +2,6 @@ package org.kainos.ea.db;
 
 import org.kainos.ea.cli.JobRole;
 import org.kainos.ea.cli.JobRoles;
-import org.kainos.ea.cli.Specification;
 import org.kainos.ea.client.ActionFailedException;
 
 import java.sql.Connection;

@@ -62,9 +62,9 @@ public class JobRoleDao {
 
             if (rs.next()) {
                 return rs.getInt(1);
-            } else {
-                throw new ActionFailedException("Could not get Job Role id");
             }
+
+            throw new ActionFailedException("Could not get Job Role id");
 
         } catch (SQLException e) {
             System.err.println(e.getMessage());

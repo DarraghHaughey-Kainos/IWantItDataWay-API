@@ -43,7 +43,7 @@ public class JobRoleController {
     }
 
     @POST
-    @Path("/job-roles/create")
+    @Path("/job-roles")
     @Produces(MediaType.APPLICATION_JSON)
     public Response createJobRole(JobRoleRequest jobRoleRequest){
         try {

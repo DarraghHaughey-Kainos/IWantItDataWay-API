@@ -44,7 +44,7 @@ public class CapabilityDao {
     public Capability getCapabilityById(Connection c, int id) throws ActionFailedException, DoesNotExistException {
         String queryString = "SELECT capability_id, capability_name " +
                 "FROM capability " +
-                "WHERE capability_id = ?";
+                "WHERE capability_id = ?;";
 
         try (PreparedStatement st = c.prepareStatement(queryString)) {
             st.setInt(1, id);

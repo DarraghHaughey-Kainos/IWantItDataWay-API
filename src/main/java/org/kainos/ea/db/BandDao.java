@@ -42,7 +42,7 @@ public class BandDao {
     public Band getBandById(Connection c, int id) throws ActionFailedException, DoesNotExistException {
         String queryString = "SELECT band_id, band_name " +
                 "FROM band " +
-                "WHERE band_id = ?";
+                "WHERE band_id = ?;";
 
         try (PreparedStatement st = c.prepareStatement(queryString)) {
             st.setInt(1, id);

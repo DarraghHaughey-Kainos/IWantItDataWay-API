@@ -24,22 +24,20 @@ import org.kainos.ea.resources.JobRoleController;
 
 public class DropwizardWebServiceApplication extends Application<DropwizardWebServiceConfiguration> {
     private AuthService authService;
-    private final JobRoleService jobRoleService;
-    private final BandService bandService;
-    private final CapabilityService capabilityService;
+    private JobRoleService jobRoleService;
+    private CapabilityService capabilityService;
+    private BandService bandService;
 
     public DropwizardWebServiceApplication() {
         DatabaseConnector databaseConnector = new DatabaseConnector();
-        BandDao bandDao = new BandDao();
-        CapabilityDao capabilityDao = new CapabilityDao();
+        jobRoleService = new JobRoleService(databaseConnector, new JobRoleDao(), new BandDao(), new CapabilityDao());
+        bandService = new BandService(databaseConnector, new BandDao());
+        capabilityService = new CapabilityService(databaseConnector, new CapabilityDao());
         try {
             authService = new AuthService(databaseConnector, new AuthDao(), new CredentialValidator());
         } catch (ActionFailedException e) {
             System.err.println(e.getMessage());
         }
-        jobRoleService = new JobRoleService(databaseConnector, new JobRoleDao(), bandDao, capabilityDao);
-        bandService = new BandService(databaseConnector, bandDao);
-        capabilityService = new CapabilityService(databaseConnector, capabilityDao);
     }
 
     public static void main(final String[] args) throws Exception {

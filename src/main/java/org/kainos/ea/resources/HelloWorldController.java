@@ -38,7 +38,8 @@ public class HelloWorldController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response helloWorld(@HeaderParam("Authorization") String token) {
         try {
-            authService.isValidToken(token);
+            String permission = "View";
+            authService.isValidToken(token, permission);
             return Response
                     .status(Response.Status.OK)
                     .entity(helloWorldService.getHelloWorld())

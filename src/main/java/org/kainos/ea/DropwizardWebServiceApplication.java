@@ -59,8 +59,8 @@ public class DropwizardWebServiceApplication extends Application<DropwizardWebSe
     public void run(final DropwizardWebServiceConfiguration configuration,
                     final Environment environment) {
         // TODO: implement application
-        environment.jersey().register(new CapabilityController(capabilityService));
-        environment.jersey().register(new HelloWorldController());
+        environment.jersey().register(new CapabilityController(capabilityService, authService));
+        environment.jersey().register(new HelloWorldController(authService));
         environment.jersey().register(new AuthController(authService));
         environment.jersey().register(new JobRoleController(jobRoleService, authService));
     }

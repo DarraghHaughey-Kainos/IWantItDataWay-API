@@ -7,6 +7,8 @@ DB_USERNAME
 DB_PASSWORD
 DB_NAME
 JWT_SECRET
+TEST_VALID_EMAIL_API
+TEST_VALID_USER_PASSWORD_API
 ```
 
 How to start the DropwizardWebService application

@@ -16,7 +16,3 @@ ADD CONSTRAINT FK_AccessRight
 FOREIGN KEY (access_right_id) REFERENCES access_rights(access_right_id);
 
 UPDATE `user` SET access_right_id=1 WHERE access_right_id IS NULL;
-
--- alter table `user` drop constraint FK_PersonOrder;
--- ALTER TABLE `user`
--- DROP COLUMN accessRightId;

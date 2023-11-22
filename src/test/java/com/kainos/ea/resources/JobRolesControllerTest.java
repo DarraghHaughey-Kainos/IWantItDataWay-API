@@ -1,9 +1,12 @@
 package com.kainos.ea.resources;
 
 import org.junit.jupiter.api.Test;
+import org.kainos.ea.api.AuthService;
 import org.kainos.ea.api.JobRoleService;
+import org.kainos.ea.cli.JobRole;
 import org.kainos.ea.cli.JobRoles;
 import org.kainos.ea.client.ActionFailedException;
+import org.kainos.ea.client.JobRoleDoesNotExistException;
 import org.kainos.ea.resources.JobRoleController;
 import org.mockito.Mockito;
 
@@ -16,7 +19,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class JobRolesControllerTest {
     JobRoleService jobRoleService = Mockito.mock(JobRoleService.class);
-    JobRoleController jobRoleController = new JobRoleController(jobRoleService);
+    AuthService authService = Mockito.mock(AuthService.class);
+    JobRoleController jobRoleController = new JobRoleController(jobRoleService, authService);
 
     @Test
     void jobRoleController_shouldReturn500Response_whenJobRoleServiceThrowsActionFailedException() throws ActionFailedException {
@@ -24,7 +28,7 @@ public class JobRolesControllerTest {
 
         Mockito.doThrow(ActionFailedException.class).when(jobRoleService).getJobRoles();
 
-        Response response = jobRoleController.getJobRoles();
+        Response response = jobRoleController.getJobRoles("");
 
         assertEquals(response.getStatus(), expectedStatusCode);
     }
@@ -44,9 +48,48 @@ public class JobRolesControllerTest {
 
         Mockito.when(jobRoleService.getJobRoles()).thenReturn(jobRoles);
 
-        Response response = jobRoleController.getJobRoles();
+        Response response = jobRoleController.getJobRoles("");
 
         assertEquals(response.getStatus(), expectedStatusCode);
         assertEquals(response.getEntity(), jobRoles);
+    }
+
+    @Test
+    void jobRoleController_shouldReturn500Response_whenJobRoleServiceGetJobByIdThrowsActionFailedException() throws ActionFailedException, JobRoleDoesNotExistException {
+        int expectedStatusCode = 500;
+
+        Mockito.doThrow(ActionFailedException.class).when(jobRoleService).getJobRoleById(1);
+
+        Response response = jobRoleController.getJobRoleById("", 1);
+
+        assertEquals(response.getStatus(), expectedStatusCode);
+    }
+
+    @Test
+    void jobRoleController_shouldReturn404Response_whenJobRoleServiceGetJobByIdThrowsJobRoleDoesNotExistException() throws ActionFailedException, JobRoleDoesNotExistException {
+        int expectedStatusCode = 404;
+
+        Mockito.doThrow(JobRoleDoesNotExistException.class).when(jobRoleService).getJobRoleById(1);
+
+        Response response = jobRoleController.getJobRoleById("", 1);
+
+        assertEquals(response.getStatus(), expectedStatusCode);
+    }
+
+    @Test
+    void jobRoleController_shouldReturn200Response_whenJobRoleServiceGetJobRoleByIdDoesNotThrowException() throws ActionFailedException, JobRoleDoesNotExistException {
+        int expectedStatusCode = 200;
+
+        JobRole jobRole = new JobRole(1, "Testing Engineer", "Engineering", "www.link.com", "Spec 1, Spec 2, Spec 3", "Associate");
+
+        List<JobRole> jobRoleList = new ArrayList<>();
+        jobRoleList.add(jobRole);
+
+        Mockito.when(jobRoleService.getJobRoleById(1)).thenReturn(jobRoleList);
+
+        Response response = jobRoleController.getJobRoleById("", 1);
+
+        assertEquals(response.getStatus(), expectedStatusCode);
+        assertEquals(response.getEntity(), jobRoleList);
     }
 }

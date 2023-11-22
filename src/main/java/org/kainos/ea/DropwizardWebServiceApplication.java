@@ -6,6 +6,7 @@ import io.dropwizard.setup.Environment;
 import io.federecio.dropwizard.swagger.SwaggerBundle;
 import io.federecio.dropwizard.swagger.SwaggerBundleConfiguration;
 import org.kainos.ea.api.CapabilityService;
+import org.kainos.ea.core.JobRequestValidator;
 import org.kainos.ea.db.CapabilityDao;
 import org.kainos.ea.resources.CapabilityController;
 import org.kainos.ea.api.JobRoleService;
@@ -25,15 +26,18 @@ import org.kainos.ea.resources.JobRoleController;
 import org.kainos.ea.resources.SpecificationController;
 
 public class DropwizardWebServiceApplication extends Application<DropwizardWebServiceConfiguration> {
+    private final JobRequestValidator jobRequestValidator;
     private AuthService authService;
     private JobRoleService jobRoleService;
     private CapabilityService capabilityService;
     private BandService bandService;
     private SpecificationService specificationService;
 
+
     public DropwizardWebServiceApplication() {
         DatabaseConnector databaseConnector = new DatabaseConnector();
-        jobRoleService = new JobRoleService(databaseConnector, new JobRoleDao());
+        jobRequestValidator = new JobRequestValidator();
+        jobRoleService = new JobRoleService(databaseConnector, new JobRoleDao(), jobRequestValidator);
         capabilityService = new CapabilityService(databaseConnector, new CapabilityDao());
         specificationService = new SpecificationService(databaseConnector, new SpecificationDao());
         try {
@@ -41,7 +45,6 @@ public class DropwizardWebServiceApplication extends Application<DropwizardWebSe
         } catch (ActionFailedException e) {
             System.err.println(e.getMessage());
         }
-        jobRoleService = new JobRoleService(databaseConnector, new JobRoleDao());
         bandService = new BandService(databaseConnector, new BandDao());
     }
 

@@ -89,4 +89,24 @@ public class JobRoleDao {
         }
     }
 
+    public String deleteJobRoleById(Connection connection, int id) throws ActionFailedException {
+
+        String deleteStatement = "DELETE FROM job_role WHERE job_role_id = ?;";
+
+        try (PreparedStatement st = connection.prepareStatement(deleteStatement)) {
+
+            st.setInt(1, id);
+
+            int affectedRows = st.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new ActionFailedException("Failed, no rows affected.");
+            }
+
+            return "Job Role with '" + id + "' has been removed!";
+
+        } catch (SQLException e) {
+            throw new ActionFailedException(e.getMessage());
+        }
+    }
 }

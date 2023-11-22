@@ -6,7 +6,9 @@ import org.kainos.ea.api.JobRoleService;
 import org.kainos.ea.cli.JobRole;
 import org.kainos.ea.cli.JobRoles;
 import org.kainos.ea.client.ActionFailedException;
+import org.kainos.ea.client.AuthenticationException;
 import org.kainos.ea.client.JobRoleDoesNotExistException;
+import org.kainos.ea.client.ValidationException;
 import org.kainos.ea.resources.JobRoleController;
 import org.mockito.Mockito;
 
@@ -91,5 +93,51 @@ public class JobRolesControllerTest {
 
         assertEquals(response.getStatus(), expectedStatusCode);
         assertEquals(response.getEntity(), jobRoleList);
+    }
+
+    @Test
+    void jobRoleController_shouldReturn202Response_whenJobRoleServiceDeleteJobRoleByIdIsCalledWithValidId() throws ActionFailedException, JobRoleDoesNotExistException, ValidationException {
+        int expectedStatusCode = 202;
+        int id = 1;
+
+        Mockito.when(jobRoleService.deleteJobRoleById(id)).thenReturn("Job Role with '" + id + "' has been removed!");
+
+        Response response = jobRoleController.deleteJobRoleById("", id);
+
+        assertEquals(response.getStatus(), expectedStatusCode);
+        assertEquals(response.getEntity(), "Job Role with '" + id + "' has been removed!");
+    }
+
+    @Test
+    void jobRoleController_shouldReturn403Response_whenJobRoleServiceDeleteJobRoleByIdIsCalledWithUnauthorisedToken() throws ActionFailedException, JobRoleDoesNotExistException, ValidationException, AuthenticationException {
+        int expectedStatusCode = 403;
+        int id = 1;
+
+        Mockito.when(authService.isValidToken("", "Admin")).thenThrow(AuthenticationException.class);
+
+        Response response = jobRoleController.deleteJobRoleById("", id);
+        assertEquals(response.getStatus(), expectedStatusCode);
+    }
+
+    @Test
+    void jobRoleController_shouldReturn404Response_whenJobRoleServiceDeleteJobRoleByIdIsCalledWithInValidId() throws ActionFailedException, JobRoleDoesNotExistException, ValidationException, AuthenticationException {
+        int expectedStatusCode = 404;
+        int id = -1;
+
+        Mockito.when(jobRoleService.deleteJobRoleById(id)).thenThrow(ValidationException.class);
+
+        Response response = jobRoleController.deleteJobRoleById("", id);
+        assertEquals(response.getStatus(), expectedStatusCode);
+    }
+
+    @Test
+    void jobRoleController_shouldReturn500Response_whenServerErrorOccurs() throws ActionFailedException, JobRoleDoesNotExistException, ValidationException, AuthenticationException {
+        int expectedStatusCode = 500;
+        int id = 1;
+
+        Mockito.when(jobRoleService.deleteJobRoleById(id)).thenThrow(ActionFailedException.class);
+
+        Response response = jobRoleController.deleteJobRoleById("", id);
+        assertEquals(response.getStatus(), expectedStatusCode);
     }
 }

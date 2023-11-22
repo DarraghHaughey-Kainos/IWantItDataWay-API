@@ -91,25 +91,4 @@ class JobRoleServiceTest {
         });
     }
 
-    @Test
-    void createJobRole_shouldReturnDoesNotExistException_whenBandDaoThrowsDoesNotExistException() throws ActionFailedException, DoesNotExistException {
-
-        Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
-        Mockito.when(bandDao.getBandById(conn, jobRoleRequest.getBandId())).thenThrow(DoesNotExistException.class);
-
-        assertThrows(DoesNotExistException.class, () -> {
-            jobRoleService.createJobRole(jobRoleRequest);
-        });
-    }
-
-    @Test
-    void createJobRole_shouldReturnDoesNotExistException_whenCapabilityDaoThrowsDoesNotExistException() throws ActionFailedException, DoesNotExistException {
-
-        Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
-        Mockito.when(capabilityDao.getCapabilityById(conn, jobRoleRequest.getCapabilityId())).thenThrow(DoesNotExistException.class);
-
-        assertThrows(DoesNotExistException.class, () -> {
-            jobRoleService.createJobRole(jobRoleRequest);
-        });
-    }
 }

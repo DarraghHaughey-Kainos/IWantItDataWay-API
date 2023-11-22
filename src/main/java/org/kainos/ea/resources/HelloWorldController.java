@@ -7,8 +7,6 @@ import org.kainos.ea.client.ActionFailedException;
 import org.kainos.ea.db.DatabaseConnector;
 import org.kainos.ea.db.HelloWorldDao;
 import org.kainos.ea.client.AuthenticationException;
-import org.kainos.ea.core.CredentialValidator;
-import org.kainos.ea.db.AuthDao;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -23,14 +21,10 @@ public class HelloWorldController {
     private final HelloWorldService helloWorldService;
     private AuthService authService;
 
-    public HelloWorldController() {
+    public HelloWorldController(AuthService authService) {
         DatabaseConnector databaseConnector = new DatabaseConnector();
         helloWorldService = new HelloWorldService(databaseConnector, new HelloWorldDao());
-        try {
-            authService = new AuthService(databaseConnector, new AuthDao(), new CredentialValidator());
-        } catch (ActionFailedException e) {
-            System.err.println(e.getMessage());
-        }
+        this.authService = authService;
     }
 
     @GET
@@ -38,7 +32,8 @@ public class HelloWorldController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response helloWorld(@HeaderParam("Authorization") String token) {
         try {
-            authService.isValidToken(token);
+            String permission = "View";
+            authService.isValidToken(token, permission);
             return Response
                     .status(Response.Status.OK)
                     .entity(helloWorldService.getHelloWorld())

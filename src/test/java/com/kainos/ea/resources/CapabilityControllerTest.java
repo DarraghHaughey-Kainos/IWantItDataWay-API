@@ -1,13 +1,14 @@
 package com.kainos.ea.resources;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.impl.DefaultClaims;
 import org.junit.jupiter.api.Test;
+import org.kainos.ea.api.AuthService;
 import org.kainos.ea.api.CapabilityService;
-import org.kainos.ea.api.JobRoleService;
 import org.kainos.ea.cli.Capability;
-import org.kainos.ea.cli.JobRole;
 import org.kainos.ea.client.ActionFailedException;
+import org.kainos.ea.client.AuthenticationException;
 import org.kainos.ea.resources.CapabilityController;
-import org.kainos.ea.resources.JobRoleController;
 import org.mockito.Mockito;
 
 import javax.ws.rs.core.Response;
@@ -18,22 +19,33 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CapabilityControllerTest {
     CapabilityService capabilityService = Mockito.mock(CapabilityService.class);
-    CapabilityController capabilityController = new CapabilityController(capabilityService);
+    AuthService authService = Mockito.mock(AuthService.class);
+    CapabilityController capabilityController = new CapabilityController(capabilityService, authService);
 
     @Test
-    void capabilityController_shouldReturn500Response_whenCapabilityServiceThrowsActionFailedException() throws ActionFailedException {
+    void capabilityController_shouldReturn500Response_whenCapabilityServiceThrowsActionFailedException() throws
+            ActionFailedException, AuthenticationException {
         int expectedStatusCode = 500;
+        String token = "";
+        String permission = "View";
+        Claims claims = new DefaultClaims();
 
         Mockito.doThrow(ActionFailedException.class).when(capabilityService).getAllCapabilities();
+        Mockito.when(authService.isValidToken(token, permission)).thenReturn(claims);
 
-        Response response = capabilityController.getAllCapabilities();
+
+        Response response = capabilityController.getAllCapabilities(token);
 
         assertEquals(response.getStatus(), expectedStatusCode);
     }
 
     @Test
-    void getAllCapabilities_shouldReturn200Response_whenCapabilityServiceDoesNotThrowException() throws ActionFailedException {
+    void getAllCapabilities_shouldReturn200Response_whenCapabilityServiceDoesNotThrowException()
+            throws ActionFailedException, AuthenticationException {
         int expectedStatusCode = 200;
+        String token = "";
+        String permission = "View";
+        Claims claims = new DefaultClaims();
 
         Capability capability1 = new Capability(1,"Innovation");
         Capability capability2 = new Capability(2,"Engineering");
@@ -45,8 +57,9 @@ public class CapabilityControllerTest {
         capabilities.add(capability3);
 
         Mockito.when(capabilityService.getAllCapabilities()).thenReturn(capabilities);
+        Mockito.when(authService.isValidToken(token, permission)).thenReturn(claims);
 
-        Response response = capabilityController.getAllCapabilities();
+        Response response = capabilityController.getAllCapabilities("");
 
         assertEquals(response.getStatus(), expectedStatusCode);
         assertEquals(response.getEntity(), capabilities);

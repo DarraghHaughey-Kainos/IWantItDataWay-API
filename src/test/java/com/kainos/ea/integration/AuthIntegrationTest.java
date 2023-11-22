@@ -22,8 +22,8 @@ public class AuthIntegrationTest {
     );
 
     Credential login = new Credential(
-            "AuthIntegrationTest@test.com",
-            "AuthIntegrationTest"
+            System.getenv("TEST_VALID_EMAIL_API"),
+            System.getenv("TEST_VALID_USER_PASSWORD_API")
     );
 
     @Test

@@ -1,7 +1,5 @@
 package org.kainos.ea.api;
 
-import org.kainos.ea.cli.Band;
-import org.kainos.ea.cli.Capability;
 import org.kainos.ea.cli.JobRole;
 import org.kainos.ea.cli.JobRoleRequest;
 import org.kainos.ea.client.ActionFailedException;

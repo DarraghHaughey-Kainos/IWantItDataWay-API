@@ -1,10 +1,14 @@
 package com.kainos.ea.resources;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.impl.DefaultClaims;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.kainos.ea.api.AuthService;
 import org.kainos.ea.api.BandService;
 import org.kainos.ea.cli.Band;
 import org.kainos.ea.client.ActionFailedException;
+import org.kainos.ea.client.AuthenticationException;
 import org.kainos.ea.client.DoesNotExistException;
 import org.kainos.ea.resources.BandController;
 import org.mockito.Mockito;
@@ -20,22 +24,32 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ExtendWith(MockitoExtension.class)
 public class BandControllerTest {
     BandService bandService = Mockito.mock(BandService.class);
-    BandController bandController = new BandController(bandService);
+    AuthService authService = Mockito.mock(AuthService.class);
+    BandController bandController = new BandController(bandService, authService);
 
     @Test
-    void getBands_shouldReturn500Response_whenBandRoleServiceThrowsActionFailedException() throws ActionFailedException {
+    void getBands_shouldReturn500Response_whenBandRoleServiceThrowsActionFailedException()
+            throws ActionFailedException, AuthenticationException {
         int expectedStatusCode = 500;
+        String token = "";
+        String permission = "View";
+        Claims claims = new DefaultClaims();
 
         Mockito.doThrow(ActionFailedException.class).when(bandService).getBands();
+        Mockito.when(authService.isValidToken(token, permission)).thenReturn(claims);
 
-        Response response = bandController.getBands();
+        Response response = bandController.getBands(token);
 
         assertEquals(response.getStatus(), expectedStatusCode);
     }
 
     @Test
-    void getBands_shouldReturn200Response_whenBandServiceDoesNotThrowException() throws ActionFailedException {
+    void getBands_shouldReturn200Response_whenBandServiceDoesNotThrowException()
+            throws ActionFailedException, AuthenticationException {
         int expectedStatusCode = 200;
+        String token = "";
+        String permission = "View";
+        Claims claims = new DefaultClaims();
 
         Band band1 = new Band(1,"Manager");
         Band band2 = new Band(2,"Manager");
@@ -47,8 +61,9 @@ public class BandControllerTest {
         bands.add(band3);
 
         Mockito.when(bandService.getBands()).thenReturn(bands);
+        Mockito.when(authService.isValidToken(token, permission)).thenReturn(claims);
 
-        Response response = bandController.getBands();
+        Response response = bandController.getBands(token);
 
         assertEquals(response.getStatus(), expectedStatusCode);
         assertEquals(response.getEntity(), bands);

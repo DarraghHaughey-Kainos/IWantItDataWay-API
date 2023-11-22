@@ -1,9 +1,12 @@
 package com.kainos.ea.api;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.impl.DefaultClaims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.kainos.ea.api.AuthService;
 import org.kainos.ea.cli.Credential;
 import org.kainos.ea.client.ActionFailedException;
@@ -16,7 +19,11 @@ import org.kainos.ea.db.DatabaseConnector;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import javax.crypto.spec.SecretKeySpec;
+import java.security.Key;
 import java.sql.Connection;
+import java.util.Base64;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -34,7 +41,7 @@ public class AuthServiceTest {
     void register_shouldReturnToken_whenDaoDoesNotThrowException() throws ActionFailedException, ValidationException {
         String expectedResult = "test_jwt_token";
         Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
-        Mockito.when(authDao.generateToken(login.getEmail())).thenReturn(expectedResult);
+        Mockito.when(authDao.generateToken(login.getEmail(), "View")).thenReturn(expectedResult);
 
         String result = authService.register(login);
         assertEquals(result, expectedResult);
@@ -65,7 +72,8 @@ public class AuthServiceTest {
         String expectedResult = "test_jwt_token";
         Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
         Mockito.when(authDao.validateLogin(conn, login)).thenReturn(true);
-        Mockito.when(authDao.generateToken(login.getEmail())).thenReturn(expectedResult);
+        Mockito.when(authDao.getUserRole(databaseConnector.getConnection(), login.getEmail())).thenReturn("View");
+        Mockito.when(authDao.generateToken(login.getEmail(), "View")).thenReturn(expectedResult);
 
         String result = authService.login(login);
         assertEquals(result, expectedResult);
@@ -92,17 +100,46 @@ public class AuthServiceTest {
     @Test
     void isValidToken_shouldThrowAuthenticationException_whenNoTokenProvided() {
         assertThrows(AuthenticationException.class,
-                () -> authService.isValidToken(null));
+                () -> authService.isValidToken(null, "View"));
     }
 
-    @Test
-    void isValidToken_shouldReturnClaims_whenTokenSuccessfullyParsed() throws AuthenticationException {
-        Claims expectedResult = new DefaultClaims();
-        String token = "test-token";
+    @ParameterizedTest
+    @CsvSource({"View,View,False", "Admin,Admin,False", "Admin,View,False", "View,Admin,True", "Admin,NewRole,True"})
+    void isValidToken_shouldThrowAuthenticationException_whenTokenSuccessfullyParsedWithViewRole(
+            String setRole, String permission, String exception)
+            throws AuthenticationException {
 
-        Mockito.when(authDao.parseToken(token)).thenReturn(expectedResult);
+        Claims claims = null;
+        String fakeSecret = "pSRQazqldmuUpzSyExp2VQr8k4j3hKqvNOgfSgEXq6ksm7y3";
+        String expectedUsername = "ExpectedUsername";
 
-        Claims result = authService.isValidToken(token);
-        assertEquals(result, expectedResult);
+        Key hmacKey = new SecretKeySpec(Base64.getDecoder().decode(fakeSecret),
+                SignatureAlgorithm.HS256.getJcaName());
+
+        String token = Jwts.builder()
+                .claim("username", expectedUsername)
+                .claim("role", setRole)
+                .signWith(hmacKey)
+                .compact();
+
+        claims = Jwts.parser()
+                .setSigningKey(fakeSecret)
+                .parseClaimsJws(token)
+                .getBody();
+
+        Mockito.when(authDao.parseToken(token)).thenReturn(claims);
+
+        if (Objects.equals(exception, "True")) {
+            assertThrows(AuthenticationException.class,
+                    () -> authService.isValidToken(token, permission));
+        } else {
+            Claims result = authService.isValidToken(token, permission);
+            String role = result.get("role").toString();
+            String username = result.get("username").toString();
+
+            assertNotNull(result);
+            assertEquals(setRole, role);
+            assertEquals(expectedUsername, username);
+        }
     }
 }

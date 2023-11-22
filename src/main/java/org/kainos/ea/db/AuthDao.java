@@ -39,7 +39,7 @@ public class AuthDao {
     public void registerUser(Connection c, Credential credential) throws ActionFailedException {
         String encodedPassword = encoder.encode(credential.getPassword());
 
-        String insertQuery = "INSERT INTO user(email,password) VALUES(?,?)";
+        String insertQuery = "INSERT INTO user(email,password, access_right_id) VALUES(?,?, 1)";
 
         try(PreparedStatement st = c.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)) {
             st.setString(1, credential.getEmail());
@@ -94,11 +94,12 @@ public class AuthDao {
         }
     }
 
-    public String generateToken(String username) throws ActionFailedException {
+    public String generateToken(String username, String userRole) throws ActionFailedException {
         Date currentDate = new Date();
 
         String token = Jwts.builder()
                 .claim("username", username)
+                .claim("role", userRole)
                 .setIssuedAt(currentDate)
                 .setExpiration(DateUtils.addHours(currentDate, 1))
                 .signWith(hmacKey)
@@ -122,6 +123,28 @@ public class AuthDao {
             throw new AuthenticationException("Token has expired");
         } catch (MalformedJwtException e) {
             throw new AuthenticationException("Invalid token");
+        }
+    }
+
+    public String getUserRole(Connection c, String email) throws ActionFailedException {
+
+        String selectQuery = "SELECT access_right FROM `user` " +
+                "INNER JOIN access_rights USING(access_right_id) " +
+                "WHERE email=?;";
+
+        try(PreparedStatement st = c.prepareStatement(selectQuery)) {
+            st.setString(1, email);
+
+            ResultSet rs = st.executeQuery();
+
+            if (rs.next()) {
+                return rs.getString("access_right");
+            }
+
+            throw new ActionFailedException("Could not get user role.");
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            throw new ActionFailedException("Could not get user role.");
         }
     }
 }

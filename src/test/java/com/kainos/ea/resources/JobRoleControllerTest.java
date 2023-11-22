@@ -1,6 +1,7 @@
 package com.kainos.ea.resources;
 
 import org.junit.jupiter.api.Test;
+import org.kainos.ea.api.AuthService;
 import org.kainos.ea.api.JobRoleService;
 import org.kainos.ea.cli.JobRole;
 import org.kainos.ea.cli.JobRoleRequest;
@@ -18,7 +19,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class JobRoleControllerTest {
     JobRoleService jobRoleService = Mockito.mock(JobRoleService.class);
-    JobRoleController jobRoleController = new JobRoleController(jobRoleService);
+    AuthService authService = Mockito.mock(AuthService.class);
+    JobRoleController jobRoleController = new JobRoleController(jobRoleService, authService);
 
     JobRoleRequest jobRoleRequest = new JobRoleRequest("Testing", 1, 1, "www.google.com");
 
@@ -28,7 +30,7 @@ public class JobRoleControllerTest {
 
         Mockito.doThrow(ActionFailedException.class).when(jobRoleService).getJobRoles();
 
-        Response response = jobRoleController.getJobRoles();
+        Response response = jobRoleController.getJobRoles("");
 
         assertEquals(response.getStatus(), expectedStatusCode);
     }
@@ -48,7 +50,7 @@ public class JobRoleControllerTest {
 
         Mockito.when(jobRoleService.getJobRoles()).thenReturn(jobRoles);
 
-        Response response = jobRoleController.getJobRoles();
+        Response response = jobRoleController.getJobRoles("");
 
         assertEquals(response.getStatus(), expectedStatusCode);
         assertEquals(response.getEntity(), jobRoles);

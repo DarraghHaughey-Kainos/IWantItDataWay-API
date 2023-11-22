@@ -47,7 +47,7 @@ public class JobRoleController {
                     .entity(jobRoleService.getJobRoles())
                     .build();
         } catch (ActionFailedException e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
             return Response.status(INTERNAL_SERVER_ERROR_500).build();
         } catch (AuthenticationException e) {
             System.err.println(e.getMessage());
@@ -67,7 +67,7 @@ public class JobRoleController {
             System.err.println(e.getMessage());
             return Response.status(INTERNAL_SERVER_ERROR_500).build();
         } catch (DoesNotExistException e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
             return Response.status(NOT_FOUND_404).build();
         } catch (AuthenticationException e) {
             System.err.println(e.getMessage());

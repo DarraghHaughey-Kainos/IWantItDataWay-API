@@ -38,8 +38,15 @@ public class JobRoleService {
 
         Band band = bandDao.getBandById(databaseConnector.getConnection(), jobRoleRequest.getBandId());
         Capability capability = capabilityDao.getCapabilityById(databaseConnector.getConnection(), jobRoleRequest.getCapabilityId());
-
         String error = jobRoleRequestValidator.isValidJobRole(jobRoleRequest);
+
+        if (band == null){
+            throw new ActionFailedException("Could not get band level");
+        }
+
+        if(capability == null){
+            throw new ActionFailedException("Could not get capability");
+        }
 
         if(error != null){
             throw new ValidationException(error);

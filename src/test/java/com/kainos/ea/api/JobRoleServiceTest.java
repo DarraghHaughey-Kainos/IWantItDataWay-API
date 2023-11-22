@@ -36,7 +36,7 @@ class JobRoleServiceTest {
 
     Connection conn;
 
-    JobRoleRequest jobRoleRequest = new JobRoleRequest("Testing", 2, 1, "www.google.com");
+    JobRoleRequest jobRoleRequest = new JobRoleRequest("Testing", 2, 1, "link.sharepoint.com");
 
     @Test
     void getJobRoles_shouldReturnJobRoles_whenDaoReturnsJobRoles() throws ActionFailedException {

@@ -6,17 +6,17 @@ public class JobRoleRequest {
     private String jobRoleTitle;
     private int bandId;
     private int capabilityId;
-    private String sharepointLink;
+    private String sharePointLink;
 
     public JobRoleRequest(
             @JsonProperty("jobRoleTitle") String jobRoleTitle,
             @JsonProperty("bandId") int bandId,
             @JsonProperty("capabilityId") int capabilityId,
-            @JsonProperty("sharepointLink") String sharepointLink) {
+            @JsonProperty("sharePointLink") String sharePointLink) {
         this.jobRoleTitle = jobRoleTitle;
         this.bandId = bandId;
         this.capabilityId = capabilityId;
-        this.sharepointLink = sharepointLink;
+        this.sharePointLink = sharePointLink;
     }
 
     public String getJobRoleTitle() {
@@ -44,10 +44,10 @@ public class JobRoleRequest {
     }
 
     public String getSharepointLink() {
-        return sharepointLink;
+        return sharePointLink;
     }
 
     public void setSharepointLink(String sharepointLink) {
-        this.sharepointLink = sharepointLink;
+        this.sharePointLink = sharepointLink;
     }
 }

@@ -36,14 +36,14 @@ public class JobRoleController {
     @GET
     @Path("/job-roles")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getJobRoles(@HeaderParam("Authorization") String token){
+    public Response getJobRoles(@HeaderParam("Authorization") String token) {
         try {
             String permission = "View";
             authService.isValidToken(token, permission);
             return Response
-                        .status(Response.Status.OK)
-                        .entity(jobRoleService.getJobRoles())
-                        .build();
+                    .status(Response.Status.OK)
+                    .entity(jobRoleService.getJobRoles())
+                    .build();
         } catch (ActionFailedException e) {
             System.out.println(e.getMessage());
             return Response.status(INTERNAL_SERVER_ERROR_500).build();
@@ -56,8 +56,10 @@ public class JobRoleController {
     @POST
     @Path("/job-roles")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createJobRole(JobRoleRequest jobRoleRequest){
+    public Response createJobRole(JobRoleRequest jobRoleRequest, @HeaderParam("Authorization") String token) {
         try {
+            String permission = "View";
+            authService.isValidToken(token, permission);
             return Response.status(CREATED_201).entity(jobRoleService.createJobRole(jobRoleRequest)).build();
         } catch (ActionFailedException e) {
             System.err.println(e.getMessage());
@@ -65,6 +67,9 @@ public class JobRoleController {
         } catch (DoesNotExistException e) {
             System.out.println(e.getMessage());
             return Response.status(NOT_FOUND_404).build();
+        } catch (AuthenticationException e) {
+            System.err.println(e.getMessage());
+            return Response.status(UNAUTHORIZED_401).entity(e.getMessage()).build();
         }
     }
 }

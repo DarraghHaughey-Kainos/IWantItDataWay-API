@@ -1,11 +1,14 @@
 package com.kainos.ea.resources;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.impl.DefaultClaims;
 import org.junit.jupiter.api.Test;
 import org.kainos.ea.api.AuthService;
 import org.kainos.ea.api.JobRoleService;
 import org.kainos.ea.cli.JobRole;
 import org.kainos.ea.cli.JobRoleRequest;
 import org.kainos.ea.client.ActionFailedException;
+import org.kainos.ea.client.AuthenticationException;
 import org.kainos.ea.client.DoesNotExistException;
 import org.kainos.ea.resources.JobRoleController;
 import org.mockito.Mockito;
@@ -57,36 +60,50 @@ public class JobRoleControllerTest {
     }
 
     @Test
-    void createJobRole_shouldReturn201Response_whenJobRoleServiceDoesNotThrowException() throws ActionFailedException, DoesNotExistException {
+    void createJobRole_shouldReturn201Response_whenJobRoleServiceDoesNotThrowException()
+            throws ActionFailedException, DoesNotExistException, AuthenticationException {
         int expectedId = 1;
         int expectedStatusCode = 201;
-
+        String token = "";
+        String permission = "View";
+        Claims claims = new DefaultClaims();
         Mockito.when(jobRoleService.createJobRole(jobRoleRequest)).thenReturn(expectedId);
+        Mockito.when(authService.isValidToken(token, permission)).thenReturn(claims);
 
-        Response response = jobRoleController.createJobRole(jobRoleRequest);
+        Response response = jobRoleController.createJobRole(jobRoleRequest, token);
 
         assertEquals(response.getStatus(), expectedStatusCode);
         assertEquals(response.getEntity(), expectedId);
     }
 
     @Test
-    void createJobRole_shouldReturn404Response_whenJobRoleServiceThrowsDoesNotExistException() throws ActionFailedException, DoesNotExistException {
+    void createJobRole_shouldReturn404Response_whenJobRoleServiceThrowsDoesNotExistException()
+            throws ActionFailedException, DoesNotExistException, AuthenticationException {
         int expectedStatusCode = 404;
-
+        String token = "";
+        String permission = "View";
+        Claims claims = new DefaultClaims();
         Mockito.doThrow(DoesNotExistException.class).when(jobRoleService).createJobRole(jobRoleRequest);
+        Mockito.when(authService.isValidToken(token, permission)).thenReturn(claims);
 
-        Response response = jobRoleController.createJobRole(jobRoleRequest);
+
+        Response response = jobRoleController.createJobRole(jobRoleRequest, token);
 
         assertEquals(response.getStatus(), expectedStatusCode);
     }
 
     @Test
-    void createJobRole_shouldReturn500Response_whenJobRoleServiceThrowsActionFailedException() throws ActionFailedException, DoesNotExistException {
+    void createJobRole_shouldReturn500Response_whenJobRoleServiceThrowsActionFailedException()
+            throws ActionFailedException, DoesNotExistException, AuthenticationException {
         int expectedStatusCode = 500;
+        String token = "";
+        String permission = "View";
+        Claims claims = new DefaultClaims();
 
         Mockito.doThrow(ActionFailedException.class).when(jobRoleService).createJobRole(jobRoleRequest);
+        Mockito.when(authService.isValidToken(token, permission)).thenReturn(claims);
 
-        Response response = jobRoleController.createJobRole(jobRoleRequest);
+        Response response = jobRoleController.createJobRole(jobRoleRequest, token);
 
         assertEquals(response.getStatus(), expectedStatusCode);
     }

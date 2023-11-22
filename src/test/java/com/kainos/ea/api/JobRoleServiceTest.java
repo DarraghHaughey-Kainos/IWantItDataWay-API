@@ -8,6 +8,7 @@ import org.kainos.ea.cli.JobRole;
 import org.kainos.ea.cli.JobRoleRequest;
 import org.kainos.ea.client.ActionFailedException;
 import org.kainos.ea.client.DoesNotExistException;
+import org.kainos.ea.client.ValidationException;
 import org.kainos.ea.db.BandDao;
 import org.kainos.ea.db.CapabilityDao;
 import org.kainos.ea.db.DatabaseConnector;
@@ -68,7 +69,7 @@ class JobRoleServiceTest {
     }
 
     @Test
-    void createJobRole_shouldReturnJobRoleId_whenJobRoleServiceDoesNotThrowException() throws ActionFailedException, DoesNotExistException {
+    void createJobRole_shouldReturnJobRoleId_whenJobRoleServiceDoesNotThrowException() throws ActionFailedException, DoesNotExistException, ValidationException {
         int expectedId = 1;
 
         Mockito.when(databaseConnector.getConnection()).thenReturn(conn);

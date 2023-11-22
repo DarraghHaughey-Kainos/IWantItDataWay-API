@@ -10,6 +10,7 @@ import org.kainos.ea.cli.JobRoleRequest;
 import org.kainos.ea.client.ActionFailedException;
 import org.kainos.ea.client.AuthenticationException;
 import org.kainos.ea.client.DoesNotExistException;
+import org.kainos.ea.client.ValidationException;
 import org.kainos.ea.resources.JobRoleController;
 import org.mockito.Mockito;
 
@@ -61,7 +62,7 @@ public class JobRoleControllerTest {
 
     @Test
     void createJobRole_shouldReturn201Response_whenJobRoleServiceDoesNotThrowException()
-            throws ActionFailedException, DoesNotExistException, AuthenticationException {
+            throws ActionFailedException, DoesNotExistException, AuthenticationException, ValidationException {
         int expectedId = 1;
         int expectedStatusCode = 201;
         String token = "";
@@ -78,7 +79,7 @@ public class JobRoleControllerTest {
 
     @Test
     void createJobRole_shouldReturn404Response_whenJobRoleServiceThrowsDoesNotExistException()
-            throws ActionFailedException, DoesNotExistException, AuthenticationException {
+            throws ActionFailedException, DoesNotExistException, AuthenticationException, ValidationException {
         int expectedStatusCode = 404;
         String token = "";
         String permission = "View";
@@ -94,7 +95,7 @@ public class JobRoleControllerTest {
 
     @Test
     void createJobRole_shouldReturn500Response_whenJobRoleServiceThrowsActionFailedException()
-            throws ActionFailedException, DoesNotExistException, AuthenticationException {
+            throws ActionFailedException, DoesNotExistException, AuthenticationException, ValidationException {
         int expectedStatusCode = 500;
         String token = "";
         String permission = "View";

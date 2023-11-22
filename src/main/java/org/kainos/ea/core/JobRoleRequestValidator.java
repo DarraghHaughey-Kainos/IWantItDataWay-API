@@ -10,6 +10,10 @@ public class JobRoleRequestValidator {
             return "The job role title must be at least 5 characters";
         }
 
+        if(jobRoleRequest.getJobRoleTitle().length() > 100){
+            return "The job role title must be less than 100 characters";
+        }
+
         if(jobRoleRequest.getBandId() < 1){
             return "You must choose a valid band";
         }

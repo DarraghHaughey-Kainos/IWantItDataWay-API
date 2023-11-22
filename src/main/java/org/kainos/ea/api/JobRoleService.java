@@ -6,6 +6,8 @@ import org.kainos.ea.cli.JobRole;
 import org.kainos.ea.cli.JobRoleRequest;
 import org.kainos.ea.client.ActionFailedException;
 import org.kainos.ea.client.DoesNotExistException;
+import org.kainos.ea.client.ValidationException;
+import org.kainos.ea.core.JobRoleRequestValidator;
 import org.kainos.ea.db.BandDao;
 import org.kainos.ea.db.CapabilityDao;
 import org.kainos.ea.db.DatabaseConnector;
@@ -18,6 +20,8 @@ public class JobRoleService {
     private final BandDao bandDao;
     private final CapabilityDao capabilityDao;
 
+    private final JobRoleRequestValidator jobRoleRequestValidator = new JobRoleRequestValidator();
+
     public JobRoleService(DatabaseConnector databaseConnector, JobRoleDao jobRoleDao, BandDao bandDao, CapabilityDao capabilityDao) {
         this.databaseConnector = databaseConnector;
         this.jobRoleDao = jobRoleDao;
@@ -29,10 +33,17 @@ public class JobRoleService {
         return jobRoleDao.getJobRoles(databaseConnector.getConnection());
     }
 
-    public int createJobRole(JobRoleRequest jobRoleRequest) throws ActionFailedException, DoesNotExistException {
-        //Check capabilities exist
+    public int createJobRole(JobRoleRequest jobRoleRequest)
+            throws ActionFailedException, DoesNotExistException, ValidationException {
+
         Band band = bandDao.getBandById(databaseConnector.getConnection(), jobRoleRequest.getBandId());
         Capability capability = capabilityDao.getCapabilityById(databaseConnector.getConnection(), jobRoleRequest.getCapabilityId());
+
+        String error = jobRoleRequestValidator.isValidJobRole(jobRoleRequest);
+
+        if(error != null){
+            throw new ValidationException(error);
+        }
 
         return jobRoleDao.createJobRole(databaseConnector.getConnection(), jobRoleRequest);
     }

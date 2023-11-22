@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import org.eclipse.jetty.http.HttpStatus;
 import org.kainos.ea.api.JobRoleService;
 import org.kainos.ea.client.ActionFailedException;
+import org.kainos.ea.client.JobRoleDoesNotExistException;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -49,6 +50,9 @@ public class JobRoleController {
         } catch (ActionFailedException e) {
             System.out.println(e.getMessage());
             return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
+        } catch (JobRoleDoesNotExistException e) {
+            System.out.println(e.getMessage());
+            return  Response.status(HttpStatus.NOT_FOUND_404).build();
         }
     }
 

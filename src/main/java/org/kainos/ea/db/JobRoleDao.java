@@ -3,6 +3,7 @@ package org.kainos.ea.db;
 import org.kainos.ea.cli.JobRole;
 import org.kainos.ea.cli.JobRoles;
 import org.kainos.ea.client.ActionFailedException;
+import org.kainos.ea.client.JobRoleDoesNotExistException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -45,7 +46,7 @@ public class JobRoleDao {
 
     }
 
-    public List<JobRole> getJobRoleById(Connection c, int id) throws ActionFailedException {
+    public List<JobRole> getJobRoleById(Connection c, int id) throws ActionFailedException, JobRoleDoesNotExistException {
 
         String query = "SELECT job_role.job_role_id, job_role.job_role_title, job_role.job_role_sharepoint_link, capability.capability_name, band.band_name, " +
                 "GROUP_CONCAT(specification.specification_text SEPARATOR ', ') AS job_role_specs " +
@@ -76,7 +77,9 @@ public class JobRoleDao {
                         jobRoleResults.getString("band_name")
                 );
 
-                jobRoleList.add(jobRole);
+                if (jobRole.getJobRoleTitle() != null) {
+                    jobRoleList.add(jobRole);
+                }
             }
 
             return jobRoleList;

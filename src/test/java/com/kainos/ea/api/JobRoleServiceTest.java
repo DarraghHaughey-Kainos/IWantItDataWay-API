@@ -6,6 +6,7 @@ import org.kainos.ea.api.JobRoleService;
 import org.kainos.ea.cli.JobRole;
 import org.kainos.ea.cli.JobRoles;
 import org.kainos.ea.client.ActionFailedException;
+import org.kainos.ea.client.JobRoleDoesNotExistException;
 import org.kainos.ea.db.DatabaseConnector;
 import org.kainos.ea.db.JobRoleDao;
 import org.mockito.Mockito;
@@ -58,7 +59,7 @@ class JobRoleServiceTest {
     }
 
     @Test
-    void getJobRoleById_shouldReturnJobRole_whenDaoReturnsJobRole() throws ActionFailedException {
+    void getJobRoleById_shouldReturnJobRole_whenDaoReturnsJobRole() throws ActionFailedException, JobRoleDoesNotExistException {
 
         JobRole jobRole = new JobRole(1, "Job Role Title", "Capability Name", "www.link.com", "Specification 1, Specification 2, Specification 3", "Associate");
 
@@ -75,7 +76,7 @@ class JobRoleServiceTest {
     }
 
     @Test
-    void getJobRole_shouldReturnSQLException_whenDaoReturnsSQLException() throws ActionFailedException {
+    void getJobRoleById_shouldReturnSQLException_whenDaoReturnsSQLException() throws ActionFailedException, JobRoleDoesNotExistException {
 
         Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
 
@@ -83,6 +84,18 @@ class JobRoleServiceTest {
 
         assertThrows(ActionFailedException.class, () -> {
             jobRoleService.getJobRoleById(1);
+        });
+    }
+
+    @Test
+    void getJobRoleById_shouldReturnJobRoleDoesNotExistException_whenDaoReturnsJobRoleNotFoundException() throws ActionFailedException, JobRoleDoesNotExistException {
+
+        Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
+
+        Mockito.when(jobRoleDao.getJobRoleById(conn, 1)).thenThrow(JobRoleDoesNotExistException.class);
+
+        assertThrows(JobRoleDoesNotExistException.class, () -> {
+           jobRoleService.getJobRoleById(1);
         });
     }
 }

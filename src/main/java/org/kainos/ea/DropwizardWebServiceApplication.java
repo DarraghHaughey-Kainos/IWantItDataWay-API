@@ -17,7 +17,6 @@ import org.kainos.ea.core.CredentialValidator;
 import org.kainos.ea.db.AuthDao;
 import org.kainos.ea.db.DatabaseConnector;
 import org.kainos.ea.resources.AuthController;
-import org.kainos.ea.resources.HelloWorldController;
 import org.kainos.ea.db.JobRoleDao;
 import org.kainos.ea.resources.BandController;
 import org.kainos.ea.resources.JobRoleController;

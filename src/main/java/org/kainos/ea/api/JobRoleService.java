@@ -16,7 +16,6 @@ public class JobRoleService {
         this.databaseConnector = databaseConnector;
         this.jobRoleDao = jobRoleDao;
     }
-
     public List<JobRoles> getJobRoles() throws ActionFailedException {
         return jobRoleDao.getJobRoles(databaseConnector.getConnection());
     }

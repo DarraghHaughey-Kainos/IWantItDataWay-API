@@ -88,7 +88,7 @@ class JobRoleServiceTest {
     }
 
     @Test
-    void getJobRoleById_shouldReturnJobRoleDoesNotExistException_whenDaoReturnsJobRoleNotFoundException() throws ActionFailedException, JobRoleDoesNotExistException {
+    void getJobRoleById_shouldReturnJobRoleDoesNotExistException_whenDaoReturnsJobRoleNotFoundException() throws JobRoleDoesNotExistException, ActionFailedException {
 
         Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
 

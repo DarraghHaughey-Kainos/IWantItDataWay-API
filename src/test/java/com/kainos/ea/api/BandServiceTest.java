@@ -5,6 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.kainos.ea.api.BandService;
 import org.kainos.ea.cli.Band;
 import org.kainos.ea.client.ActionFailedException;
+import org.kainos.ea.client.DoesNotExistException;
 import org.kainos.ea.db.BandDao;
 import org.kainos.ea.db.DatabaseConnector;
 import org.mockito.Mockito;
@@ -27,7 +28,7 @@ public class BandServiceTest {
     Connection conn;
 
     @Test
-    void getJobRoles_shouldReturnJobRoles_whenDaoReturnsJobRoles() throws ActionFailedException {
+    void getBands_shouldReturnBands_whenDaoReturnsBands() throws ActionFailedException {
         Band band1 = new Band(1,"Manager");
         Band band2 = new Band(2,"Manager");
         Band band3 = new Band(3,"Manager");
@@ -46,7 +47,7 @@ public class BandServiceTest {
     }
 
     @Test
-    void getEmployees_shouldReturnSQLException_whenDaoReturnsSQLException() throws ActionFailedException {
+    void getBands_shouldThrowActionFailedException_whenDaoThrowsActionFailedException() throws ActionFailedException {
 
         Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
 
@@ -56,4 +57,18 @@ public class BandServiceTest {
             bandService.getBands();
         });
     }
+
+    @Test
+    void getBandById_shouldReturnBand_whenDaoReturnsBand() throws ActionFailedException, DoesNotExistException {
+        int id = 1;
+        Band band = new Band(1,"Manager");
+
+        Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
+        Mockito.when(bandDao.getBandById(conn, id)).thenReturn(band);
+
+        Band result = bandService.getBandById(id);
+
+        assertEquals(result, band);
+    }
+
 }

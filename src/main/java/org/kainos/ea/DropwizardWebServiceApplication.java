@@ -5,18 +5,18 @@ import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.federecio.dropwizard.swagger.SwaggerBundle;
 import io.federecio.dropwizard.swagger.SwaggerBundleConfiguration;
+import org.kainos.ea.api.BandService;
+import org.kainos.ea.api.JobRoleService;
+import org.kainos.ea.db.BandDao;
 import org.kainos.ea.api.CapabilityService;
 import org.kainos.ea.db.CapabilityDao;
 import org.kainos.ea.resources.CapabilityController;
-import org.kainos.ea.api.JobRoleService;
 import org.kainos.ea.api.AuthService;
 import org.kainos.ea.client.ActionFailedException;
 import org.kainos.ea.core.CredentialValidator;
 import org.kainos.ea.api.SpecificationService;
 import org.kainos.ea.db.SpecificationDao;
 import org.kainos.ea.db.AuthDao;
-import org.kainos.ea.api.BandService;
-import org.kainos.ea.db.BandDao;
 import org.kainos.ea.db.DatabaseConnector;
 import org.kainos.ea.resources.AuthController;
 import org.kainos.ea.db.JobRoleDao;
@@ -33,7 +33,8 @@ public class DropwizardWebServiceApplication extends Application<DropwizardWebSe
 
     public DropwizardWebServiceApplication() {
         DatabaseConnector databaseConnector = new DatabaseConnector();
-        jobRoleService = new JobRoleService(databaseConnector, new JobRoleDao());
+        jobRoleService = new JobRoleService(databaseConnector, new JobRoleDao(), new BandDao(), new CapabilityDao());
+        bandService = new BandService(databaseConnector, new BandDao());
         capabilityService = new CapabilityService(databaseConnector, new CapabilityDao());
         specificationService = new SpecificationService(databaseConnector, new SpecificationDao());
         try {
@@ -41,7 +42,6 @@ public class DropwizardWebServiceApplication extends Application<DropwizardWebSe
         } catch (ActionFailedException e) {
             System.err.println(e.getMessage());
         }
-        jobRoleService = new JobRoleService(databaseConnector, new JobRoleDao());
         bandService = new BandService(databaseConnector, new BandDao());
     }
 
@@ -71,7 +71,7 @@ public class DropwizardWebServiceApplication extends Application<DropwizardWebSe
         environment.jersey().register(new CapabilityController(capabilityService, authService));
         environment.jersey().register(new AuthController(authService));
         environment.jersey().register(new SpecificationController(specificationService));
-        environment.jersey().register(new BandController(bandService));
+        environment.jersey().register(new BandController(bandService, authService));
         environment.jersey().register(new JobRoleController(jobRoleService, authService));
     }
 }

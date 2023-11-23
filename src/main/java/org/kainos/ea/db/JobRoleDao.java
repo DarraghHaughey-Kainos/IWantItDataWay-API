@@ -2,14 +2,15 @@ package org.kainos.ea.db;
 
 import org.kainos.ea.cli.JobRole;
 import org.kainos.ea.cli.JobRoles;
+import org.kainos.ea.cli.JobRoleRequest;
 import org.kainos.ea.client.ActionFailedException;
 import org.kainos.ea.client.JobRoleDoesNotExistException;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.SQLException;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,4 +90,30 @@ public class JobRoleDao {
         }
     }
 
+    public int createJobRole(Connection c, JobRoleRequest jobRoleRequest) throws ActionFailedException {
+
+        // Insert employee into employee table
+        String insertEmployeeStatement = "INSERT INTO job_role (job_role_title, capability_id, band_id, job_role_sharepoint_link) "+
+                "VALUES (?,?,?,?);";
+
+        try (PreparedStatement st = c.prepareStatement(insertEmployeeStatement, Statement.RETURN_GENERATED_KEYS)) {
+            st.setString(1, jobRoleRequest.getJobRoleTitle());
+            st.setInt(2, jobRoleRequest.getCapabilityId());
+            st.setInt(3, jobRoleRequest.getBandId());
+            st.setString(4, jobRoleRequest.getSharepointLink());
+
+            st.executeUpdate();
+            ResultSet rs = st.getGeneratedKeys();
+
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+
+            throw new ActionFailedException("Could not get Job Role id");
+
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            throw new ActionFailedException("Failed to create Job Role");
+        }
+    }
 }

@@ -8,6 +8,7 @@ import org.kainos.ea.api.CapabilityService;
 import org.kainos.ea.cli.Capability;
 import org.kainos.ea.client.ActionFailedException;
 import org.kainos.ea.client.AuthenticationException;
+import org.kainos.ea.client.DoesNotExistException;
 import org.kainos.ea.resources.CapabilityController;
 import org.mockito.Mockito;
 
@@ -63,5 +64,44 @@ public class CapabilityControllerTest {
 
         assertEquals(response.getStatus(), expectedStatusCode);
         assertEquals(response.getEntity(), capabilities);
+    }
+
+    @Test
+    void getControllerById_shouldReturn200Response_whenBandServiceDoesNotThrowException() throws ActionFailedException, DoesNotExistException {
+        int id = 1;
+        int expectedStatusCode = 200;
+
+        Capability capability = new Capability(1,"Innovation");
+
+        Mockito.when(capabilityService.getCapabilityById(id)).thenReturn(capability);
+
+        Response response = capabilityController.getCapabilityById(id);
+
+        assertEquals(response.getStatus(), expectedStatusCode);
+        assertEquals(response.getEntity(), capability);
+    }
+
+    @Test
+    void getControllerById_shouldReturn404Response_whenBandServiceThrowsDoesNotExistException() throws ActionFailedException, DoesNotExistException {
+        int id = 1;
+        int expectedStatusCode = 404;
+
+        Mockito.doThrow(DoesNotExistException.class).when(capabilityService).getCapabilityById(id);
+
+        Response response = capabilityController.getCapabilityById(id);
+
+        assertEquals(response.getStatus(), expectedStatusCode);
+    }
+
+    @Test
+    void getControllerById_shouldReturn500Response_whenBandServiceThrowsDoesNotExistException() throws ActionFailedException, DoesNotExistException {
+        int id = 1;
+        int expectedStatusCode = 500;
+
+        Mockito.doThrow(ActionFailedException.class).when(capabilityService).getCapabilityById(id);
+
+        Response response = capabilityController.getCapabilityById(id);
+
+        assertEquals(response.getStatus(), expectedStatusCode);
     }
 }

@@ -3,8 +3,10 @@ package com.kainos.ea.api;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.kainos.ea.api.CapabilityService;
+import org.kainos.ea.cli.Band;
 import org.kainos.ea.cli.Capability;
 import org.kainos.ea.client.ActionFailedException;
+import org.kainos.ea.client.DoesNotExistException;
 import org.kainos.ea.db.CapabilityDao;
 import org.kainos.ea.db.DatabaseConnector;
 import org.mockito.Mockito;
@@ -56,4 +58,16 @@ public class CapabilityServiceTest {
         });
     }
 
+    @Test
+    void getCapabilityById_shouldReturnCapability_whenDaoReturnsBand() throws ActionFailedException, DoesNotExistException {
+        int id = 1;
+        Capability capability = new Capability(1, "Innovation");
+
+        Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
+        Mockito.when(capabilityDao.getCapabilityById(conn, id)).thenReturn(capability);
+
+        Capability result = capabilityService.getCapabilityById(id);
+
+        assertEquals(result, capability);
+    }
 }

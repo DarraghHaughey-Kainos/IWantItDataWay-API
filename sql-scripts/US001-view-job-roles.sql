@@ -7,7 +7,7 @@ job_role_title VARCHAR(50) NOT NULL
 
 INSERT INTO job_role (job_role_title)
 VALUES
-    ('Workday Test consultant'),
+    ('Workday Test Consultant'),
     ('Functional Consultant'),
     ('Senior Software Engineer'),
     ('Dynamics Solution Architect'),

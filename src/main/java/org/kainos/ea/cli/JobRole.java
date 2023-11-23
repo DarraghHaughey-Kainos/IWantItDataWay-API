@@ -9,7 +9,8 @@ public class JobRole {
     private String bandName;
     private String jobRoleResponsibilities;
 
-    public JobRole(int jobRoleId, String jobRoleTitle, String capabilityName, String sharepointLink, String specificationText, String bandName, String jobRoleResponsibilities) {
+    public JobRole(int jobRoleId, String jobRoleTitle, String capabilityName, String sharepointLink, String specificationText, String bandName,
+                   String jobRoleResponsibilities) {
         this.jobRoleId = jobRoleId;
         this.jobRoleTitle = jobRoleTitle;
         this.capabilityName = capabilityName;

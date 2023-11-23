@@ -46,8 +46,8 @@ public class JobRoleDao {
 
     public List<JobRole> getJobRoleById(Connection c, int id) throws ActionFailedException, JobRoleDoesNotExistException {
 
-        String query = "SELECT job_role.job_role_id, job_role.job_role_title, job_role.job_role_sharepoint_link, capability.capability_name, band.band_name, job_role_responsibility," +
-                "GROUP_CONCAT(specification.specification_text SEPARATOR ', ') AS job_role_specs " +
+        String query = "SELECT job_role.job_role_id, job_role.job_role_title, job_role.job_role_sharepoint_link, capability.capability_name, band.band_name," +
+                " job_role_responsibility, GROUP_CONCAT(specification.specification_text SEPARATOR ', ') AS job_role_specs " +
                 "FROM job_role " +
                 "LEFT JOIN capability ON job_role.capability_id = capability.capability_id " +
                 "LEFT JOIN band ON job_role.band_id = band.band_id " +

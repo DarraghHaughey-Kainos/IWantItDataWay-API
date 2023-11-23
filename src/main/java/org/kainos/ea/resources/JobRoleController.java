@@ -6,6 +6,7 @@ import org.kainos.ea.api.JobRoleService;
 import org.kainos.ea.cli.JobRoleRequest;
 import org.kainos.ea.client.ActionFailedException;
 import org.kainos.ea.client.DoesNotExistException;
+import org.kainos.ea.client.JobRoleDoesNotExistException;
 import org.kainos.ea.client.AuthenticationException;
 import org.kainos.ea.client.ValidationException;
 
@@ -13,6 +14,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -77,4 +79,29 @@ public class JobRoleController {
             return Response.status(BAD_REQUEST_400).entity(e.getMessage()).build();
         }
     }
+
+    @GET
+    @Path("/job-roles/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getJobRoleById(@HeaderParam("Authorization") String token, @PathParam("id") int id) {
+        try {
+            String permission = "View";
+            authService.isValidToken(token, permission);
+            return Response
+                    .status(Response.Status.OK)
+                    .entity(jobRoleService.getJobRoleById(id))
+                    .build();
+        } catch (ActionFailedException e) {
+            System.out.println(e.getMessage());
+            return Response.status(INTERNAL_SERVER_ERROR_500).build();
+        } catch (JobRoleDoesNotExistException e) {
+            System.out.println(e.getMessage());
+            return  Response.status(NOT_FOUND_404).build();
+        } catch (AuthenticationException e) {
+            System.err.println(e.getMessage());
+            return Response.status(Response.Status.UNAUTHORIZED).entity(e.getMessage()).build();
+        }
+    }
+
+
 }

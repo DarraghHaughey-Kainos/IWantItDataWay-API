@@ -5,7 +5,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.kainos.ea.api.CapabilityService;
 import org.kainos.ea.cli.Band;
 import org.kainos.ea.cli.Capability;
-import org.kainos.ea.cli.JobRole;
 import org.kainos.ea.client.ActionFailedException;
 import org.kainos.ea.client.DoesNotExistException;
 import org.kainos.ea.db.CapabilityDao;

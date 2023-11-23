@@ -7,6 +7,7 @@ import org.kainos.ea.api.AuthService;
 import org.kainos.ea.api.JobRoleService;
 import org.kainos.ea.cli.JobRole;
 import org.kainos.ea.cli.JobRoleRequest;
+import org.kainos.ea.cli.JobRoles;
 import org.kainos.ea.client.ActionFailedException;
 import org.kainos.ea.client.AuthenticationException;
 import org.kainos.ea.client.DoesNotExistException;
@@ -43,11 +44,11 @@ public class JobRoleControllerTest {
     void getJobRoles_shouldReturn200Response_whenJobRoleServiceDoesNotThrowException() throws ActionFailedException {
         int expectedStatusCode = 200;
 
-        JobRole jobRole1 = new JobRole(1,"Testing Engineer", "Engineering", "Manager");
-        JobRole jobRole2 = new JobRole(2,"Testing2 Engineer", "Engineering", "Manager");
-        JobRole jobRole3 = new JobRole(3,"Testing3 Engineer", "Engineering", "Manager");
+        JobRoles jobRole1 = new JobRoles(1,"Testing Engineer", "Engineering", "Manager");
+        JobRoles jobRole2 = new JobRoles(2,"Testing2 Engineer", "Engineering", "Manager");
+        JobRoles jobRole3 = new JobRoles(3,"Testing3 Engineer", "Engineering", "Manager");
 
-        List<JobRole> jobRoles = new ArrayList<>();
+        List<JobRoles> jobRoles = new ArrayList<>();
         jobRoles.add(jobRole1);
         jobRoles.add(jobRole2);
         jobRoles.add(jobRole3);

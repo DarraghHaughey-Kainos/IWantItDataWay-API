@@ -2,7 +2,9 @@ package org.kainos.ea.api;
 
 import org.kainos.ea.cli.JobRole;
 import org.kainos.ea.cli.JobRoleRequest;
+import org.kainos.ea.cli.JobRoles;
 import org.kainos.ea.client.ActionFailedException;
+import org.kainos.ea.client.JobRoleDoesNotExistException;
 import org.kainos.ea.client.DoesNotExistException;
 import org.kainos.ea.client.ValidationException;
 import org.kainos.ea.core.JobRoleRequestValidator;
@@ -27,8 +29,17 @@ public class JobRoleService {
         this.capabilityDao = capabilityDao;
     }
 
-    public List<JobRole> getJobRoles() throws ActionFailedException {
+    public List<JobRoles> getJobRoles() throws ActionFailedException {
         return jobRoleDao.getJobRoles(databaseConnector.getConnection());
+    }
+
+    public List<JobRole> getJobRoleById(int id) throws ActionFailedException, JobRoleDoesNotExistException {
+        List<JobRole> jobRole = jobRoleDao.getJobRoleById(databaseConnector.getConnection(), id);
+
+        if (jobRole.isEmpty()) {
+            throw new JobRoleDoesNotExistException("Job role with ID " + id + " does not exist");
+        }
+        return jobRole;
     }
 
     public int createJobRole(JobRoleRequest jobRoleRequest)

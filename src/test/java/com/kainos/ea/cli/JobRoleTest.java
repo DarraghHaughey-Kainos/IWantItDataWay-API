@@ -2,14 +2,15 @@ package com.kainos.ea.cli;
 
 import org.junit.jupiter.api.Test;
 import org.kainos.ea.cli.JobRole;
+import org.kainos.ea.cli.JobRoles;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class JobRoleTest {
 
     @Test
-    void getterAndSetterJobRoleTest() {
-        JobRole jobRole = new JobRole(1, "Software Engineer", "Band 5", "Software Development");
+    void getterAndSetterJobRolesTest() {
+        JobRoles jobRole = new JobRoles(1, "Software Engineer", "Band 5", "Software Development");
 
         int jobRoleId = 2;
         String jobRoleTitle = "Senior Software Engineer";

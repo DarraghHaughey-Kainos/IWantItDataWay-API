@@ -20,7 +20,7 @@ import org.kainos.ea.db.BandDao;
 import org.kainos.ea.db.DatabaseConnector;
 import org.kainos.ea.resources.AuthController;
 import org.kainos.ea.db.JobRoleDao;
-import org.kainos.ea.resources.HelloWorldController;
+import org.kainos.ea.resources.BandController;
 import org.kainos.ea.resources.JobRoleController;
 import org.kainos.ea.resources.SpecificationController;
 import org.kainos.ea.resources.BandController;
@@ -70,7 +70,6 @@ public class DropwizardWebServiceApplication extends Application<DropwizardWebSe
                     final Environment environment) {
         // TODO: implement application
         environment.jersey().register(new CapabilityController(capabilityService, authService));
-        environment.jersey().register(new HelloWorldController(authService));
         environment.jersey().register(new AuthController(authService));
         environment.jersey().register(new SpecificationController(specificationService));
         environment.jersey().register(new BandController(bandService));

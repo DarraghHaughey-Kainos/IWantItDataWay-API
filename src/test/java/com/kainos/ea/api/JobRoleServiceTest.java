@@ -24,6 +24,7 @@ class JobRoleServiceTest {
     DatabaseConnector databaseConnector = Mockito.mock(DatabaseConnector.class);
     JobRoleDao jobRoleDao = Mockito.mock(JobRoleDao.class);
 
+
     JobRoleService jobRoleService = new JobRoleService(databaseConnector, jobRoleDao);
 
     Connection conn;

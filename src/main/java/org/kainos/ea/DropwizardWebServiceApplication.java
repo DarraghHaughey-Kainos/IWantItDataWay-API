@@ -31,6 +31,7 @@ public class DropwizardWebServiceApplication extends Application<DropwizardWebSe
     private BandService bandService;
     private SpecificationService specificationService;
 
+
     public DropwizardWebServiceApplication() {
         DatabaseConnector databaseConnector = new DatabaseConnector();
         jobRoleService = new JobRoleService(databaseConnector, new JobRoleDao());
@@ -41,7 +42,6 @@ public class DropwizardWebServiceApplication extends Application<DropwizardWebSe
         } catch (ActionFailedException e) {
             System.err.println(e.getMessage());
         }
-        jobRoleService = new JobRoleService(databaseConnector, new JobRoleDao());
         bandService = new BandService(databaseConnector, new BandDao());
     }
 

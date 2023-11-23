@@ -119,4 +119,50 @@ public class JobRolesIntegrationTest {
 
         Assertions.assertEquals(401, response.getStatus());
     }
+
+    @Test
+    void deleteJobRoleById_shouldReturn404_whenInvalidRoleIsPassedIn () {
+        String JWTSecret = System.getenv("JWT_SECRET");
+        String expectedUsername = "ExpectedUsername";
+
+        Key hmacKey = new SecretKeySpec(Base64.getDecoder().decode(JWTSecret),
+                SignatureAlgorithm.HS256.getJcaName());
+
+        String token = Jwts.builder()
+                .claim("username", expectedUsername)
+                .claim("role", "Admin")
+                .setExpiration(DateUtils.addHours(new Date(), 1))
+                .signWith(hmacKey)
+                .compact();
+
+        Response response = APP.client().target("http://localhost:8080/api/job-roles/-1")
+                .request()
+                .header("Authorization", token)
+                .delete();
+
+        Assertions.assertEquals(404, response.getStatus());
+    }
+
+    @Test
+    void deleteJobRoleById_shouldReturn403_whenInvalidRoleIsPassedIn () {
+        String JWTSecret = System.getenv("JWT_SECRET");
+        String expectedUsername = "ExpectedUsername";
+
+        Key hmacKey = new SecretKeySpec(Base64.getDecoder().decode(JWTSecret),
+                SignatureAlgorithm.HS256.getJcaName());
+
+        String token = Jwts.builder()
+                .claim("username", expectedUsername)
+                .claim("role", "Invalid Role")
+                .setExpiration(DateUtils.addHours(new Date(), 1))
+                .signWith(hmacKey)
+                .compact();
+
+        Response response = APP.client().target("http://localhost:8080/api/job-roles/1")
+                .request()
+                .header("Authorization", token)
+                .delete();
+
+        Assertions.assertEquals(403, response.getStatus());
+    }
 }

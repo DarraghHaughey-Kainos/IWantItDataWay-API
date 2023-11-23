@@ -6,6 +6,7 @@ import org.kainos.ea.client.ActionFailedException;
 import org.kainos.ea.client.JobRoleDoesNotExistException;
 import org.kainos.ea.db.DatabaseConnector;
 import org.kainos.ea.db.JobRoleDao;
+
 import java.util.List;
 
 public class JobRoleService {
@@ -30,4 +31,11 @@ public class JobRoleService {
         return jobRole;
     }
 
+    public String deleteJobRoleById(int id) throws ActionFailedException,
+            JobRoleDoesNotExistException {
+        if (jobRoleDao.getJobRoleById(databaseConnector.getConnection(), id).isEmpty()) {
+            throw new JobRoleDoesNotExistException("Job role with ID " + id + " does not exist");
+        }
+        return jobRoleDao.deleteJobRoleById(databaseConnector.getConnection(), id);
+    }
 }

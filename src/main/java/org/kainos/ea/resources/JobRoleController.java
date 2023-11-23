@@ -8,9 +8,10 @@ import org.kainos.ea.client.ActionFailedException;
 import org.kainos.ea.client.JobRoleDoesNotExistException;
 import org.kainos.ea.client.AuthenticationException;
 
-import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.Path;
+import javax.ws.rs.GET;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -71,5 +72,28 @@ public class JobRoleController {
         }
     }
 
-
+    @DELETE
+    @Path("/job-roles/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteJobRoleById(@HeaderParam("Authorization") String token, @PathParam("id") int id) {
+        try {
+            String permission = "Admin";
+            authService.isValidToken(token, permission);
+            return Response
+                    .status(Response.Status.NO_CONTENT)
+                    .entity(jobRoleService.deleteJobRoleById(id))
+                    .build();
+        } catch (ActionFailedException e) {
+            return Response
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR_500)
+                    .build();
+        } catch (JobRoleDoesNotExistException e) {
+            return Response
+                    .status(HttpStatus.NOT_FOUND_404)
+                    .build();
+        } catch (AuthenticationException e) {
+            System.err.println(e.getMessage());
+            return Response.status(Response.Status.FORBIDDEN).entity(e.getMessage()).build();
+        }
+    }
 }

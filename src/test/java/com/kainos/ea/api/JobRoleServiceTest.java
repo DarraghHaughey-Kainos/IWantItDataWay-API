@@ -7,7 +7,6 @@ import org.kainos.ea.cli.JobRole;
 import org.kainos.ea.cli.JobRoles;
 import org.kainos.ea.client.ActionFailedException;
 import org.kainos.ea.client.JobRoleDoesNotExistException;
-import org.kainos.ea.core.JobRequestValidator;
 import org.kainos.ea.db.DatabaseConnector;
 import org.kainos.ea.db.JobRoleDao;
 import org.mockito.Mockito;
@@ -25,9 +24,8 @@ class JobRoleServiceTest {
     DatabaseConnector databaseConnector = Mockito.mock(DatabaseConnector.class);
     JobRoleDao jobRoleDao = Mockito.mock(JobRoleDao.class);
 
-    JobRequestValidator jobRequestValidator = Mockito.mock(JobRequestValidator.class);
 
-    JobRoleService jobRoleService = new JobRoleService(databaseConnector, jobRoleDao, jobRequestValidator);
+    JobRoleService jobRoleService = new JobRoleService(databaseConnector, jobRoleDao);
 
     Connection conn;
     @Test

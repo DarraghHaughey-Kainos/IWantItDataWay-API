@@ -7,7 +7,6 @@ import org.kainos.ea.api.JobRoleService;
 import org.kainos.ea.client.ActionFailedException;
 import org.kainos.ea.client.JobRoleDoesNotExistException;
 import org.kainos.ea.client.AuthenticationException;
-import org.kainos.ea.client.ValidationException;
 
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.Path;
@@ -81,14 +80,14 @@ public class JobRoleController {
             String permission = "Admin";
             authService.isValidToken(token, permission);
             return Response
-                    .status(Response.Status.ACCEPTED)
+                    .status(Response.Status.NO_CONTENT)
                     .entity(jobRoleService.deleteJobRoleById(id))
                     .build();
         } catch (ActionFailedException e) {
             return Response
                     .status(HttpStatus.INTERNAL_SERVER_ERROR_500)
                     .build();
-        } catch (ValidationException e) {
+        } catch (JobRoleDoesNotExistException e) {
             return Response
                     .status(HttpStatus.NOT_FOUND_404)
                     .build();

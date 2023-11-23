@@ -96,8 +96,8 @@ public class JobRolesControllerTest {
     }
 
     @Test
-    void jobRoleController_shouldReturn202Response_whenJobRoleServiceDeleteJobRoleByIdIsCalledWithValidId() throws ActionFailedException, JobRoleDoesNotExistException, ValidationException {
-        int expectedStatusCode = 202;
+    void jobRoleController_shouldReturn204Response_whenJobRoleServiceDeleteJobRoleByIdIsCalledWithValidId() throws ActionFailedException, JobRoleDoesNotExistException, ValidationException {
+        int expectedStatusCode = 204;
         int id = 1;
 
         Mockito.when(jobRoleService.deleteJobRoleById(id)).thenReturn("Job Role with '" + id + "' has been removed!");
@@ -124,7 +124,7 @@ public class JobRolesControllerTest {
         int expectedStatusCode = 404;
         int id = -1;
 
-        Mockito.when(jobRoleService.deleteJobRoleById(id)).thenThrow(ValidationException.class);
+        Mockito.when(jobRoleService.deleteJobRoleById(id)).thenThrow(JobRoleDoesNotExistException.class);
 
         Response response = jobRoleController.deleteJobRoleById("", id);
         assertEquals(response.getStatus(), expectedStatusCode);

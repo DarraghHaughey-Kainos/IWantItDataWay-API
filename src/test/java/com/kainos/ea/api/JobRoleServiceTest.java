@@ -62,7 +62,7 @@ class JobRoleServiceTest {
     @Test
     void getJobRoleById_shouldReturnJobRole_whenDaoReturnsJobRole() throws ActionFailedException, JobRoleDoesNotExistException {
 
-        JobRole jobRole = new JobRole(1, "Job Role Title", "Capability Name", "www.link.com", "Specification 1, Specification 2, Specification 3", "Associate");
+        JobRole jobRole = new JobRole(1, "Job Role Title", "Capability Name", "www.link.com", "Specification 1, Specification 2, Specification 3", "Associate", "Test Responsibility");
 
         List<JobRole> jobRoles = new ArrayList<>();
         jobRoles.add(jobRole);
@@ -89,7 +89,7 @@ class JobRoleServiceTest {
     }
 
     @Test
-    void getJobRoleById_shouldReturnJobRoleDoesNotExistException_whenDaoReturnsJobRoleNotFoundException() throws ActionFailedException, JobRoleDoesNotExistException {
+    void getJobRoleById_shouldReturnJobRoleDoesNotExistException_whenDaoReturnsJobRoleNotFoundException() throws JobRoleDoesNotExistException, ActionFailedException {
 
         Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
 

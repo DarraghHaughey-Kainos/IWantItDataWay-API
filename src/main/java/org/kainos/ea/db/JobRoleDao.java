@@ -17,8 +17,7 @@ public class JobRoleDao {
 
     public List<JobRoles> getJobRoles(Connection c) throws ActionFailedException {
         try (Statement st = c.createStatement()) {
-            String queryString = "SELECT job_role_id, job_role_title, capability_name, band_name " +
-                    "FROM job_role "
+            String queryString = "SELECT job_role_id, job_role_title, capability_name, band_name FROM job_role "
                     + "LEFT JOIN capability "
                     + "USING(capability_id)"
                     + "LEFT JOIN band USING(band_id);";
@@ -43,13 +42,12 @@ public class JobRoleDao {
             System.err.println(e.getMessage());
             throw new ActionFailedException("Failed to get Job Roles");
         }
-
     }
 
     public List<JobRole> getJobRoleById(Connection c, int id) throws ActionFailedException, JobRoleDoesNotExistException {
 
-        String query = "SELECT job_role.job_role_id, job_role.job_role_title, job_role.job_role_sharepoint_link, capability.capability_name, band.band_name, " +
-                "GROUP_CONCAT(specification.specification_text SEPARATOR ', ') AS job_role_specs " +
+        String query = "SELECT job_role.job_role_id, job_role.job_role_title, job_role.job_role_sharepoint_link, capability.capability_name, band.band_name," +
+                " job_role_responsibility, GROUP_CONCAT(specification.specification_text SEPARATOR ', ') AS job_role_specs " +
                 "FROM job_role " +
                 "LEFT JOIN capability ON job_role.capability_id = capability.capability_id " +
                 "LEFT JOIN band ON job_role.band_id = band.band_id " +
@@ -74,7 +72,8 @@ public class JobRoleDao {
                         jobRoleResults.getString("capability_name"),
                         jobRoleResults.getString("job_role_sharepoint_link"),
                         jobRoleResults.getString("job_role_specs"),
-                        jobRoleResults.getString("band_name")
+                        jobRoleResults.getString("band_name"),
+                        jobRoleResults.getString("job_role_responsibility")
                 );
 
                 if (jobRole.getJobRoleTitle() != null) {
@@ -83,7 +82,7 @@ public class JobRoleDao {
             }
 
             return jobRoleList;
-        } catch (SQLException e) {
+        } catch (SQLException e){
             System.err.println(e.getMessage());
             throw new ActionFailedException("Failed to get Job Role");
         }
